@@ -1,0 +1,77 @@
+---
+title: "Trona: Wyoming's Buried Treasure"
+description: 'Beneath southwest Wyoming lies the largest trona deposit on Earth. What is this mineral, how did an ancient lake create it, and why does it matter for both soda ash and hydrogen?'
+pubDate: 2026-05-18
+tags: ['Trona', 'Wyoming', 'Minerals']
+heroIcon: 'lucide:gem'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import EvaporiteFormation from '../../components/viz/EvaporiteFormation.tsx';
+import GreenRiverBasinMap from '../../components/viz/GreenRiverBasinMap.tsx';
+import MineralComposition from '../../components/viz/MineralComposition.tsx';
+
+Most people have never heard of trona — yet it's in the glass of the window you're
+near, and Wyoming sits on more of it than anywhere else on the planet.
+
+## What is trona?
+
+Trona is **sodium sesquicarbonate**, Na₃(CO₃)(HCO₃)·2H₂O — a single mineral that
+carries carbonate, bicarbonate, sodium, and water all at once. It's monoclinic,
+typically fibrous to bladed, and ranges from gray-white to a pale honey color.
+That richer chemistry (compared with plain rock salt) is what makes it both useful
+and interesting to store hydrogen in.
+
+<Figure caption="Trona's makeup versus ordinary halite. Toggle between mass and atom fractions.">
+  <MineralComposition client:visible />
+</Figure>
+
+## How an ancient lake built it
+
+Trona is an **evaporite** — a mineral left behind when water evaporates. Tens of
+millions of years ago, a vast lake (geologists call it Lake Gosiute) repeatedly
+flooded and dried in a closed basin. Each cycle concentrated the brine until
+minerals dropped out in sequence, layer upon layer.
+
+<Figure wide caption="Run the cycles: a lake floods and evaporates, precipitating carbonate, then trona, then halite — stacking into bedded layers over time.">
+  <EvaporiteFormation client:visible />
+</Figure>
+
+Repeat that for ages and you get the **Green River Formation**: dozens of trona
+beds, some metres thick, sealed under rock.
+
+## Where it is
+
+<Figure caption="Wyoming's Green River Basin — the world's largest known trona deposit. Tap the basin or a city.">
+  <GreenRiverBasinMap client:visible />
+</Figure>
+
+<Callout type="key" title="Two reasons trona matters">
+1. **Soda ash.** Refined trona becomes soda ash (sodium carbonate) — essential to
+   glass, detergents, and a long list of chemicals. Wyoming supplies most of the
+   United States' natural soda ash.
+2. **Storage.** Those same thick, sealing evaporite beds are candidate host rock
+   for engineered hydrogen caverns — right where Wyoming wants to build a hydrogen
+   economy.
+</Callout>
+
+So the buried treasure works twice: a global supply of an everyday industrial
+mineral, and a potential home for the clean fuel of the future.
+
+<Callout type="key" title="Takeaways">
+- Trona is **sodium sesquicarbonate** — chemically richer than rock salt.
+- It formed as an **evaporite**, layer by layer, in an ancient drying lake.
+- Wyoming's **Green River Basin** holds the world's largest deposit.
+- It's vital for **soda ash** today — and a candidate host for **hydrogen storage** tomorrow.
+</Callout>
+
+---
+
+### Sources & further reading
+
+- U.S. Geological Survey — *Mineral Commodity Summaries: Soda Ash*.
+- Wyoming State Geological Survey — trona and the Green River Formation.
+- Trona — mineral data, [mindat.org](https://www.mindat.org/min-4031.html); [galleries.com](https://galleries.com/minerals/carbonat/trona/trona.htm).
+
+*The interactive figures are schematic and illustrative.*

@@ -1,0 +1,82 @@
+---
+title: 'Solution Mining: Carving a Cavern from Rock'
+description: 'You cannot dig a cavern a kilometre underground — you dissolve one. A visual look at how water, circulation, and a clever floating blanket sculpt a storage cavern out of solid salt or trona.'
+pubDate: 2026-04-18
+tags: ['Solution mining', 'Caverns', 'Salt']
+heroIcon: 'lucide:pickaxe'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import SolutionMiningSim from '../../components/viz/SolutionMiningSim.tsx';
+import CavernCrossSection from '../../components/viz/CavernCrossSection.tsx';
+
+How do you make a void the size of a cathedral, a kilometre below the surface,
+without anyone ever going down there? You don't dig it. You **dissolve** it.
+
+Salt and trona share a convenient property: they dissolve readily in water. That
+turns cavern-building into a plumbing problem. Drill a well into the bed, pump
+fresh water down, let it dissolve the rock, and pump the resulting brine back up.
+Do that for months, and a precisely shaped cavern slowly opens up underground.
+
+## The basic loop
+
+The process — **solution mining**, or leaching — is a continuous circulation of
+water in and brine out. The trick is *controlling the shape*, because an
+uncontrolled cavern can grow lopsided, undercut its roof, or stray out of the bed.
+
+<Figure wide caption="Solution mining in action. Switch the circulation direction, set the blanket depth, and run the leach — watch the cavern grow and change shape.">
+  <SolutionMiningSim client:visible />
+</Figure>
+
+Two controls do most of the sculpting:
+
+- **Circulation direction.** In *direct* circulation, fresh water is delivered to
+  the bottom of the cavern, so dissolution is strongest there and the cavern
+  widens at the base. *Reverse* circulation flips it, widening the cavern higher up.
+- **The blanket.** A lighter fluid — often nitrogen or a hydrocarbon — is floated
+  on top of the brine. Water can't dissolve rock where the blanket sits, so it
+  forms a protective ceiling and sets the cavern's roof depth.
+
+<Callout type="key" title="Why shape control matters">
+A storage cavern has to be mechanically stable for decades. Solution miners aim
+for smooth, roughly cylindrical or pear shapes with a sound roof and enough rock
+("salt back") above and around the cavern. The blanket and circulation are how
+they steer toward that geometry — long before any hydrogen goes in.
+</Callout>
+
+## What you're carving into
+
+The same method works in different host rocks, and the rock changes the rules.
+Trona is more soluble than salt and its beds are thinner and shallower — so the
+leach is faster but the room to grow is smaller.
+
+<Figure wide caption="The host rock you leach into: switch between salt and trona to see how depth and bed thickness differ.">
+  <CavernCrossSection client:visible />
+</Figure>
+
+## The brine question
+
+Every cubic metre of cavern produces a cubic metre of brine that has to go
+somewhere — reinjected, evaporated, or sold. In Wyoming's trona country there's a
+neat twist: the dissolved trona brine is itself a feedstock for **soda ash**, so
+the "waste" from carving a cavern can have real value.
+
+<Callout type="key" title="Takeaways">
+- Caverns are **dissolved, not dug** — fresh water in, brine out.
+- **Direct vs. reverse** circulation and a floating **blanket** control the
+  cavern's shape and roof.
+- The **host rock** sets the pace and the limits: trona leaches fast but in
+  thinner beds than salt.
+- The brine byproduct is a disposal challenge — or, for trona, a resource.
+</Callout>
+
+---
+
+### Sources & further reading
+
+- Solution Mining Research Institute (SMRI) — technical conference literature on cavern leaching and design.
+- Bérest, P. & Brouard, B. (2003) — *Safety of Salt Caverns Used for Underground Storage*, Oil & Gas Science and Technology.
+- U.S. Geological Survey — *Mineral Commodity Summaries: Soda Ash* (trona brine and soda-ash production).
+
+*The interactive figures are schematic — chosen to make the process legible, not to model a specific cavern.*

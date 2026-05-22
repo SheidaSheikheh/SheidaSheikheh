@@ -1,0 +1,67 @@
+---
+title: 'The Colors of Hydrogen'
+description: 'Hydrogen is colorless — but you will hear it called green, blue, grey, and more. The colors are a shorthand for how it is made, and they decide whether it actually helps the climate.'
+pubDate: 2026-05-12
+tags: ['Hydrogen', 'Energy transition']
+heroIcon: 'lucide:palette'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import HydrogenColors from '../../components/viz/HydrogenColors.tsx';
+import EnergyDensityChart from '../../components/viz/EnergyDensityChart.tsx';
+
+Hydrogen is the same colorless gas no matter how you make it. But you'll constantly
+hear it described in color — green, blue, grey, pink, turquoise. Those names are a
+shorthand for the *production route*, and that's what determines whether a
+kilogram of hydrogen is a climate solution or a climate problem.
+
+## A spectrum of production
+
+<Figure wide caption="Pick a color to see its feedstock, process, and rough CO2 intensity.">
+  <HydrogenColors client:visible />
+</Figure>
+
+The headline: most hydrogen made today is **grey** — steam-reforming natural gas,
+emitting roughly ten kilograms of CO₂ for every kilogram of hydrogen. **Green**
+hydrogen (electrolysis run on renewables) is the goal, with **blue** (reforming
+plus carbon capture) and **turquoise** (methane pyrolysis to solid carbon) as
+lower-carbon bridges.
+
+<Callout type="key" title="Why the color matters">
+Clean hydrogen only helps if it's actually clean. Switching from grey to green is
+the entire point — but green hydrogen needs cheap renewable power *and* somewhere
+to store the output, because supply and demand rarely line up in time.
+</Callout>
+
+## The catch: storing it
+
+Whatever its color, hydrogen shares an awkward physical trait. It packs more energy
+per kilogram than any other fuel — and almost the least per litre.
+
+<Figure caption="Switch between energy per mass and per volume. Hydrogen tops the first chart and sits near the bottom of the second.">
+  <EnergyDensityChart client:visible />
+</Figure>
+
+That mismatch is the whole reason underground storage exists. You can't keep
+meaningful amounts of hydrogen in tanks; you need the volume of a cavern or a
+reservoir. So the color question — *how do we make it cleanly?* — leads straight to
+a storage question — *where do we keep it?* — which is exactly where the geology of
+salt and trona comes in.
+
+<Callout type="key" title="Takeaways">
+- The "colors" describe **how hydrogen is made**, not the gas itself.
+- **Grey** dominates today; **green** is the goal; **blue/turquoise** are bridges.
+- Hydrogen is energy-dense **per kilogram** but sparse **per litre**.
+- That low volumetric density is why clean hydrogen needs **large-scale underground storage.**
+</Callout>
+
+---
+
+### Sources & further reading
+
+- International Energy Agency (2019) — *The Future of Hydrogen*.
+- IEA — *Global Hydrogen Review* (annual), on production routes and emissions intensity.
+- Tarkowski, R. (2019) — *Underground hydrogen storage: Characteristics and prospects*, Renewable and Sustainable Energy Reviews.
+
+*CO2 intensities and energy-density figures are approximate, illustrative values.*

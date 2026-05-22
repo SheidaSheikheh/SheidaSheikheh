@@ -1,0 +1,72 @@
+---
+title: 'Anatomy of a Storage Cavern'
+description: 'What is actually down there? A guided tour of an operating hydrogen cavern — wellhead to sump — and the cushion gas, working gas, and pressure window that keep it running.'
+pubDate: 2026-04-28
+tags: ['Caverns', 'Hydrogen storage']
+heroIcon: 'lucide:container'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import CavernAnatomy from '../../components/viz/CavernAnatomy.tsx';
+import OperatingPressureWindow from '../../components/viz/OperatingPressureWindow.tsx';
+
+A finished storage cavern looks simple from the surface — just a wellhead in a
+field. Underground, it's a carefully engineered system, and every part has a job.
+
+## The parts
+
+From the valves at the surface to the dead space at the very bottom, here's what
+makes up a working hydrogen cavern.
+
+<Figure wide caption="Tap any part — or its label — to see what it does.">
+  <CavernAnatomy client:visible />
+</Figure>
+
+The single most important detail is the **last cemented casing shoe**: the depth
+where the steel-and-cement well ends and the open cavern begins. Its pressure
+integrity sets the safe limits for the entire store.
+
+## Cushion gas vs. working gas
+
+Not all the hydrogen in a cavern can be sold. A permanent **cushion** holds the
+pressure up — keeping the walls supported and the deliverability high — while only
+the **working gas** above it is actually cycled.
+
+<Callout type="key" title="Why the cushion is non-negotiable">
+Run a cavern down to empty and two things go wrong: the rock starts to creep
+inward, and the remaining gas can't be delivered fast enough. The cushion is the
+floor that prevents both. It can be a large share of the total inventory — a real
+cost of doing business underground.
+</Callout>
+
+## How it's operated
+
+Day to day, operating a cavern means walking its pressure up and down inside a safe
+window — high enough to resist creep, low enough to avoid fracturing the rock or
+breaching the caprock.
+
+<Figure caption="The safe operating window as a function of depth. Deeper caverns get a higher, wider window — and therefore hold more hydrogen.">
+  <OperatingPressureWindow client:visible />
+</Figure>
+
+Each injection and withdrawal is a trip across that window. How fast and how often
+you can make that trip — the cavern's *deliverability* and *cycling rate* — is what
+makes salt caverns so well suited to balancing a renewable grid.
+
+<Callout type="key" title="Takeaways">
+- A cavern is a full system: **wellhead, cemented casing, casing shoe, cavern body, and sump.**
+- The **casing shoe** governs pressure integrity for everything below it.
+- **Cushion gas** stays put; only **working gas** is cycled.
+- Operation means staying inside a depth-dependent **pressure window**.
+</Callout>
+
+---
+
+### Sources & further reading
+
+- Solution Mining Research Institute (SMRI) — references on cavern design and operation.
+- Caglayan, D. G., et al. (2020) — *Technical potential of salt caverns for hydrogen storage in Europe*, International Journal of Hydrogen Energy.
+- Tarkowski, R. (2019) — *Underground hydrogen storage: Characteristics and prospects*, Renewable and Sustainable Energy Reviews.
+
+*The figures use illustrative parameters to make the concepts clear, not to represent a specific cavern.*
