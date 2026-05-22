@@ -1,0 +1,114 @@
+---
+title: 'Will It Hold? The Geomechanics of Keeping a Cavern Stable'
+description: 'An underground cavern is a hole in rock that is squeezed, flows, and slowly closes. A visual look at the stress, creep, pressure limits, and subsidence that decide whether storage stays safe.'
+pubDate: 2026-05-06
+tags: ['Reservoir geomechanics', 'Cavern stability', 'Hydrogen storage']
+heroIcon: 'lucide:gauge'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import StressFieldViz from '../../components/viz/StressFieldViz.tsx';
+import CreepClosureChart from '../../components/viz/CreepClosureChart.tsx';
+import SafeOperatingWindow from '../../components/viz/SafeOperatingWindow.tsx';
+import SubsidenceViz from '../../components/viz/SubsidenceViz.tsx';
+
+It's tempting to picture an underground cavern as a simple empty room — dig it out,
+fill it with hydrogen, done. The rock tells a different story. A kilometre down,
+that "room" is squeezed from every side, the walls slowly flow inward like cold
+honey, and the pressure inside has to be threaded between two kinds of failure.
+**Geomechanics** is the discipline that decides whether the cavern holds.
+
+This is the part of underground storage I find most interesting, so let's open up
+the rock and look.
+
+## The squeeze: in-situ stress
+
+Before you cut anything, deep rock is already under enormous stress: the weight of
+everything above presses down (the vertical stress, σv), and the rock pushes back
+sideways (the horizontal stress, σh). Cut a cavern into that, and the stress has
+to flow *around* the opening — concentrating in some places, vanishing in others.
+
+<Figure wide caption="Stress around a circular cavern. Change the depth and the horizontal-to-vertical stress ratio K, and watch where stress concentrates — and where the rock goes into tension.">
+  <StressFieldViz client:visible />
+</Figure>
+
+The pattern is the heart of cavern stability. Compression piles up at the
+**sides** (the springline), while the **crown** can swing into *tension* when the
+horizontal stress is low. Rock is strong in compression but weak in tension, so a
+tensile crown is exactly where roof spalling starts.
+
+<Callout type="key" title="Why the stress ratio matters">
+The ratio K = σh / σv is set by geology, not by us. A low K means a roof in
+tension; a K near 1 spreads the load evenly. Knowing K at a candidate site is one
+of the first things a geomechanics study tries to pin down.
+</Callout>
+
+## Rock that flows: creep
+
+Here's the strange part about salt and trona: over years, they don't just sit
+there — they *flow*. Under sustained stress they creep, and a cavern slowly
+shrinks. How fast depends steeply on the stress difference across the walls and on
+temperature.
+
+<Figure caption="Creep closure over decades. Push up the differential stress or temperature and the curve steepens dramatically — and notice trona creeps faster than salt.">
+  <CreepClosureChart client:visible />
+</Figure>
+
+This is why you can't just leave a cavern at low pressure. The closure rate
+follows a power law in stress and an Arrhenius law in temperature, so a deeper,
+hotter, or more depressurised cavern closes far faster. Trona's faster creep is
+one of the open questions that makes it harder to engineer than salt.
+
+## The safe window
+
+Put stress and creep together and you get the single most important number in
+cavern operation: the **internal gas pressure**. Too low, and creep plus shear
+failure squeeze the cavern shut. Too high, and you fracture the rock or breach the
+caprock above. Safety lives in the band between.
+
+<Figure caption="Drag the operating pressure and watch the cavern respond — creeping closed when too low, fracturing when too high, stable in the green window.">
+  <SafeOperatingWindow client:visible />
+</Figure>
+
+Every injection and withdrawal cycle walks the cavern up and down inside this
+window. Designing those cycles — how low you dare go, how fast, how often — is
+applied geomechanics in action.
+
+## What the surface feels
+
+The deep slow creep doesn't stay deep. As a cavern gradually closes, the ground
+above settles into a shallow **subsidence bowl** — usually just centimetres, but
+measurable, and a useful clue to what's happening kilometres below.
+
+<Figure caption="Run the clock forward: as the cavern creeps closed, the surface sags into a subsidence bowl. Surveying that bowl is one way operators monitor cavern health.">
+  <SubsidenceViz client:visible />
+</Figure>
+
+Monitoring subsidence, microseismicity, and wellhead pressure together lets
+operators catch problems early — long before they become failures.
+
+<Callout type="key" title="Takeaways">
+- Cutting a cavern **concentrates stress**: compression at the sides, possible
+  tension at the crown.
+- Salt and trona **creep** — caverns close over time, faster with stress, heat,
+  and low pressure.
+- Safe operation means keeping internal pressure inside a **window** between creep
+  closure and fracturing.
+- Slow closure shows up at the surface as **subsidence**, a key monitoring signal.
+</Callout>
+
+---
+
+### Further reading
+
+Reservoir geomechanics is central to evaluating any subsurface store. For the
+storage context these stability questions sit within, see:
+
+- Sheikheh, S., et al. — *A review of evaporite beds potential for storage caverns:
+  uncovering new opportunities*, Applied Sciences, 2025.
+- Sheikheh, S., Rabiei, M., Rasouli, V. — *Comparison of Salt and Trona Caverns for
+  Hydrogen Storage*, SMRI Spring 2023 Technical Conference.
+
+*All interactive figures use illustrative parameters chosen to make the mechanics
+visible, not to model a specific cavern.*

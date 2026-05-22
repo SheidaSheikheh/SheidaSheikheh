@@ -1,0 +1,117 @@
+---
+title: 'Putting Hydrogen Underground: Where, How Much, and How to Choose'
+description: 'Grid-scale hydrogen has to live underground. A visual guide to the storage options, the seasonal logic, the pressure physics, and how engineers pick a site.'
+pubDate: 2026-03-24
+tags: ['Hydrogen storage', 'Underground storage', 'Wyoming']
+heroIcon: 'lucide:droplets'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import StorageOptionsExplorer from '../../components/viz/StorageOptionsExplorer.tsx';
+import CapacityVsFootprint from '../../components/viz/CapacityVsFootprint.tsx';
+import SeasonalStorageChart from '../../components/viz/SeasonalStorageChart.tsx';
+import OperatingPressureWindow from '../../components/viz/OperatingPressureWindow.tsx';
+import SiteSelectionCriteria from '../../components/viz/SiteSelectionCriteria.tsx';
+
+If hydrogen is going to do real work in a clean-energy grid, we need to store a
+lot of it for a long time. Not a few hours of buffering — *months*. A wind-and-solar
+grid makes too much energy in some seasons and not enough in others, and the only
+place big and cheap enough to soak up that mismatch is the ground beneath our feet.
+
+This post is about the practical questions that follow: **what kind of rock can hold
+hydrogen, how much fits, what pressures are involved, and how an engineer decides
+where to put it.**
+
+## Where can hydrogen go underground?
+
+There are four serious candidates, and they trade off against each other. Salt
+caverns cycle fast and stay tight but each one is modest in size. Depleted gas
+reservoirs are enormous but slow and cushion-gas hungry. Aquifers are a wildcard.
+Lined rock caverns are flexible but pricey.
+
+<Figure caption="The four main underground storage options, scored across the properties that matter. Switch the metric and tap any bar to read about that option.">
+  <StorageOptionsExplorer client:visible />
+</Figure>
+
+There's no universal winner — only the right tool for a given geology and duty
+cycle. Salt is the safe bet for fast, clean cycling; depleted reservoirs win when
+you simply need somewhere vast.
+
+## The footprint argument
+
+Why bother going underground at all? Because the numbers above ground don't work.
+The energy you can store per unit of surface area is wildly different.
+
+<Figure caption="Energy stored per site, on a logarithmic scale. Note that each step to the right is ten times larger.">
+  <CapacityVsFootprint client:visible />
+</Figure>
+
+A single salt cavern can hold something like a thousand times the hydrogen of a
+surface tank — from roughly the same patch of ground. That ratio is the entire
+reason underground storage exists.
+
+## Storing the seasons
+
+Seasonal storage is the use case that makes geologic storage essential. Charge the
+store when renewable power is plentiful; draw it down when demand spikes and the
+wind is calm.
+
+<Figure wide caption="A year of seasonal storage. Press play and watch the inventory fill through summer and empty through winter — while the cushion gas never moves.">
+  <SeasonalStorageChart client:visible />
+</Figure>
+
+<Callout type="key" title="Working gas vs. cushion gas">
+Not all the hydrogen in a store can be used. A permanent **cushion** keeps the
+pressure high enough to hold the cavern open and maintain deliverability. Only the
+**working gas** above that cushion is cycled. Designing a store means sizing both.
+</Callout>
+
+## How deep, how much pressure?
+
+The amount of hydrogen a cavern holds is set by pressure, and pressure is set by
+depth. Too low and the rock creeps inward; too high and you risk fracturing it.
+The safe band sits between roughly 30% and 80% of the lithostatic load.
+
+<Figure caption="The operating-pressure window as a function of depth. Drag the depth slider — deeper caverns get a higher, wider safe window, and so hold more gas.">
+  <OperatingPressureWindow client:visible />
+</Figure>
+
+This is why depth is such a prized property in site screening: it directly buys you
+capacity. It's also why Wyoming's shallow trona beds are a tougher engineering
+problem than deep salt.
+
+## Choosing a site
+
+Real site selection is never one number. It's a balance of geology, safety, and
+geography — depth, seal integrity, reservoir quality, seismic calm, and how far the
+storage sits from where hydrogen is made and used. Different priorities crown
+different winners.
+
+<Figure caption="A weighted site-selection model for three Wyoming basins. Slide the weights to match your priorities and watch the ranking change.">
+  <SiteSelectionCriteria client:visible />
+</Figure>
+
+This is exactly the kind of screening that underpins underground-storage planning
+in Wyoming: lay out the candidate basins, score them honestly, and be explicit
+about what you're optimising for.
+
+<Callout type="key" title="Takeaways">
+- Hydrogen for a clean grid must be stored **underground, seasonally, at scale**.
+- The four main options — salt caverns, depleted reservoirs, aquifers, lined rock
+  caverns — each win under different conditions.
+- **Depth buys capacity** by widening the safe pressure window.
+- Site selection is a transparent, weighted trade-off — not a single best answer.
+</Callout>
+
+---
+
+### Further reading
+
+- Sheikheh, S., et al. — *Underground Hydrogen Storage Site Selection in Wyoming*,
+  SPE Energy Transition Symposium, 2024.
+- Sheikheh, S., et al. — *A review of evaporite beds potential for storage caverns:
+  uncovering new opportunities*, Applied Sciences, 2025.
+
+*The interactive figures use illustrative numbers chosen to make the concepts
+clear, not to represent any specific project.*
