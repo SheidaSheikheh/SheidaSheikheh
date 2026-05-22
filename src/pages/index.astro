@@ -2,58 +2,68 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { profile } from '../data/profile';
 
-// A single ellipse, drawn three times (rotated) to form the atom's orbits.
-const ORBIT = 'M38,300 A262,96 0 1 0 562,300 A262,96 0 1 0 38,300 Z';
+// Hydrogen: ONE proton (nucleus) + ONE electron on a single orbit.
+const ORBIT = 'M18,100 A82,30 0 1 0 182,100 A82,30 0 1 0 18,100 Z';
+// Trona crystal: a cluster of bladed monoclinic crystals (angle°, height).
+const BLADES = [
+  { rot: -20, h: 58 },
+  { rot: -6, h: 80 },
+  { rot: 9, h: 70 },
+  { rot: 23, h: 52 },
+];
+const blade = (h: number) => `M-6,0 L6,0 L5,${-(h - 7)} L-6,${-h} Z`;
 ---
 
 <BaseLayout fullscreen={true}>
   <section class="hero">
-    <div class="atom-wrap" aria-hidden="true">
-      <svg class="atom" viewBox="0 0 600 600" aria-hidden="true">
-        <defs>
-          <filter id="atomGlow" x="-60%" y="-60%" width="220%" height="220%">
-            <feGaussianBlur stdDeviation="5" result="b" />
-            <feMerge>
-              <feMergeNode in="b" />
-              <feMergeNode in="SourceGraphic" />
-            </feMerge>
-          </filter>
-          <radialGradient id="atomCore">
-            <stop offset="0%" class="core-in" />
-            <stop offset="100%" class="core-out" />
-          </radialGradient>
-        </defs>
-
-        <circle cx="300" cy="300" r="170" fill="url(#atomCore)" />
-
-        <g class="atom-spin">
-          <g transform="rotate(0 300 300)">
-            <path id="o1" class="atom-orbit" d={ORBIT} />
-            <circle class="atom-electron" r="6.5" filter="url(#atomGlow)">
-              <animateMotion dur="7s" repeatCount="indefinite"><mpath href="#o1" /></animateMotion>
-            </circle>
-          </g>
-          <g transform="rotate(60 300 300)">
-            <path id="o2" class="atom-orbit" d={ORBIT} />
-            <circle class="atom-electron" r="5.5" filter="url(#atomGlow)">
-              <animateMotion dur="9.5s" begin="-3s" repeatCount="indefinite"><mpath href="#o2" /></animateMotion>
-            </circle>
-          </g>
-          <g transform="rotate(120 300 300)">
-            <path id="o3" class="atom-orbit" d={ORBIT} />
-            <circle class="atom-electron" r="6" filter="url(#atomGlow)">
-              <animateMotion dur="11s" begin="-6s" repeatCount="indefinite"><mpath href="#o3" /></animateMotion>
-            </circle>
-          </g>
-        </g>
-
-        <circle class="atom-nucleus" cx="300" cy="300" r="14" filter="url(#atomGlow)">
-          <animate attributeName="r" values="13;16;13" dur="3.6s" repeatCount="indefinite" />
-        </circle>
-      </svg>
-    </div>
-
     <div class="hero-inner">
+      <div class="hero-motifs" aria-hidden="true">
+        <!-- Hydrogen atom -->
+        <svg class="atomicon" viewBox="0 0 200 200">
+          <defs>
+            <filter id="hglow" x="-60%" y="-60%" width="220%" height="220%">
+              <feGaussianBlur stdDeviation="3" result="b" />
+              <feMerge><feMergeNode in="b" /><feMergeNode in="SourceGraphic" /></feMerge>
+            </filter>
+            <radialGradient id="hcloud">
+              <stop offset="0%" class="cloud-in" />
+              <stop offset="100%" class="cloud-out" />
+            </radialGradient>
+          </defs>
+          <circle cx="100" cy="100" r="74" fill="url(#hcloud)" />
+          <g transform="rotate(-18 100 100)">
+            <path id="ho" class="orbit" d={ORBIT} />
+            <circle class="electron" r="5" filter="url(#hglow)">
+              <animateMotion dur="5.5s" repeatCount="indefinite"><mpath href="#ho" /></animateMotion>
+            </circle>
+          </g>
+          <circle class="nucleus" cx="100" cy="100" r="7.5" filter="url(#hglow)">
+            <animate attributeName="r" values="6.8;8.6;6.8" dur="3.4s" repeatCount="indefinite" />
+          </circle>
+        </svg>
+
+        <!-- Trona crystal (Na3(CO3)(HCO3)·2H2O) -->
+        <svg class="tronaicon" viewBox="0 0 120 130">
+          <defs>
+            <radialGradient id="tglow">
+              <stop offset="0%" class="trona-glow-in" />
+              <stop offset="100%" class="trona-glow-out" />
+            </radialGradient>
+          </defs>
+          <ellipse cx="60" cy="78" rx="58" ry="48" fill="url(#tglow)" />
+          <g class="trona-cluster">
+            {
+              BLADES.map((b) => (
+                <g transform={`translate(60,114) rotate(${b.rot})`}>
+                  <path d={blade(b.h)} />
+                  <line class="facet" x1="0" y1="-4" x2="-0.6" y2={-(b.h - 5)} />
+                </g>
+              ))
+            }
+          </g>
+        </svg>
+      </div>
+
       <p class="eyebrow hero-eyebrow">{profile.affiliation} · Energy &amp; Petroleum Engineering</p>
       <h1 class="hero-name">{profile.name}</h1>
       <p class="hero-tagline">{profile.tagline}</p>
@@ -72,35 +82,6 @@ const ORBIT = 'M38,300 A262,96 0 1 0 562,300 A262,96 0 1 0 38,300 Z';
     overflow: hidden;
     padding-inline: var(--pad);
   }
-
-  .atom-wrap {
-    position: absolute;
-    inset: 0;
-    display: grid;
-    place-items: center;
-    z-index: 0;
-    pointer-events: none;
-  }
-  .atom {
-    width: min(96vmin, 920px);
-    height: auto;
-    overflow: visible;
-    animation: atom-rotate 120s linear infinite;
-  }
-  @keyframes atom-rotate {
-    to { transform: rotate(360deg); }
-  }
-  .atom-orbit {
-    fill: none;
-    stroke: var(--accent);
-    stroke-width: 1.6;
-    opacity: 0.26;
-  }
-  .atom-electron { fill: var(--accent); }
-  .atom-nucleus { fill: var(--accent-strong); }
-  .core-in { stop-color: var(--accent); stop-opacity: 0.28; }
-  .core-out { stop-color: var(--accent); stop-opacity: 0; }
-
   .hero-inner {
     position: relative;
     z-index: 1;
@@ -108,9 +89,49 @@ const ORBIT = 'M38,300 A262,96 0 1 0 562,300 A262,96 0 1 0 38,300 Z';
     margin-inline: auto;
     padding-block: 2rem;
   }
-  .hero-eyebrow {
-    margin-bottom: 1.2rem;
+
+  .hero-motifs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: clamp(0.75rem, 4vw, 2.4rem);
+    margin-bottom: 1.7rem;
   }
+  .atomicon {
+    width: clamp(118px, 19vw, 158px);
+    height: auto;
+    overflow: visible;
+  }
+  .tronaicon {
+    width: clamp(60px, 11vw, 86px);
+    height: auto;
+    overflow: visible;
+  }
+
+  /* hydrogen atom */
+  .orbit { fill: none; stroke: var(--accent); stroke-width: 1.7; opacity: 0.55; }
+  .electron { fill: var(--accent); }
+  .nucleus { fill: var(--accent-strong); }
+  .cloud-in { stop-color: var(--accent); stop-opacity: 0.22; }
+  .cloud-out { stop-color: var(--accent); stop-opacity: 0; }
+
+  /* trona crystal */
+  .trona-cluster {
+    stroke: var(--accent-2);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    fill: var(--accent-2);
+    fill-opacity: 0.12;
+  }
+  .trona-cluster .facet {
+    stroke-width: 1;
+    stroke-opacity: 0.55;
+    fill: none;
+  }
+  .trona-glow-in { stop-color: var(--accent-2); stop-opacity: 0.16; }
+  .trona-glow-out { stop-color: var(--accent-2); stop-opacity: 0; }
+
+  .hero-eyebrow { margin-bottom: 1.1rem; }
   .hero-name {
     font-size: clamp(2.6rem, 9.5vw, 6.5rem);
     line-height: 0.98;
@@ -127,9 +148,9 @@ const ORBIT = 'M38,300 A262,96 0 1 0 562,300 A262,96 0 1 0 38,300 Z';
 </style>
 
 <script>
-  // Respect reduced-motion: freeze the SMIL orbit timeline.
+  // Respect reduced-motion: freeze the SMIL orbit.
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll<SVGSVGElement>('svg.atom').forEach((el) => {
+    document.querySelectorAll<SVGSVGElement>('svg.atomicon').forEach((el) => {
       try {
         el.pauseAnimations();
       } catch {
