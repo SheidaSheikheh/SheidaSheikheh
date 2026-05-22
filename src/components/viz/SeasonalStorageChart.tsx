@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useResizeObserver, useAnimationLoop } from './_shared/hooks';
-import { PlayButton, Slider, StatGrid } from './_shared/controls';
+import { PlayButton, Slider, SpeedControl, StatGrid } from './_shared/controls';
 
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const NET = [-11, -8, -2, 5, 9, 11, 10, 8, 4, -5, -9, -12]; // net injection per month (sums to 0)
@@ -31,10 +31,11 @@ export default function SeasonalStorageChart() {
   const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const [p, setP] = useState(12);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   useAnimationLoop((dt) => {
     setP((prev) => {
-      const next = prev + dt / 750;
+      const next = prev + (dt / 750) * speed;
       return next >= 12 ? 0 : next;
     });
   }, playing);
@@ -83,6 +84,7 @@ export default function SeasonalStorageChart() {
           playLabel="Play year"
           pauseLabel="Pause"
         />
+        <SpeedControl value={speed} onChange={setSpeed} />
         <Slider
           label="Month"
           min={0}

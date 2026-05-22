@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useResizeObserver, useAnimationLoop } from './_shared/hooks';
-import { PlayButton, Slider, StatGrid, Legend } from './_shared/controls';
+import { PlayButton, Slider, SpeedControl, StatGrid, Legend } from './_shared/controls';
 
 const H = 360;
 const MAX_CYCLES = 5;
@@ -17,10 +17,11 @@ export default function EvaporiteFormation() {
   const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const [t, setT] = useState(0.6);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   useAnimationLoop((dt) => {
     setT((prev) => {
-      const next = prev + dt / 9000;
+      const next = prev + (dt / 9000) * speed;
       return next >= 1 ? 0 : next;
     });
   }, playing);
@@ -44,6 +45,7 @@ export default function EvaporiteFormation() {
     <div className="viz">
       <div className="viz-controls">
         <PlayButton playing={playing} onToggle={() => setPlaying((p) => !p)} onReset={() => { setPlaying(false); setT(0); }} playLabel="Run cycles" pauseLabel="Pause" />
+        <SpeedControl value={speed} onChange={setSpeed} />
         <Slider label="Geologic time" min={0} max={1} step={0.005} value={t} onChange={(v) => { setPlaying(false); setT(v); }} format={(v) => `cycle ${Math.min(MAX_CYCLES, Math.floor(v * MAX_CYCLES) + 1)}`} />
       </div>
 

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useResizeObserver, useAnimationLoop } from './_shared/hooks';
-import { SegmentedControl, Slider, PlayButton, StatGrid, Legend } from './_shared/controls';
+import { SegmentedControl, Slider, PlayButton, SpeedControl, StatGrid, Legend } from './_shared/controls';
 
 type Rock = 'salt' | 'trona';
 
@@ -27,10 +27,11 @@ export default function CreepClosureChart() {
   const [temp, setTemp] = useState(50);
   const [p, setP] = useState(MAX_T);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   useAnimationLoop((dt) => {
     setP((prev) => {
-      const next = prev + (dt / 1000) * 6; // ~5s per 30yr
+      const next = prev + (dt / 1000) * 6 * speed; // ~5s per 30yr
       return next >= MAX_T ? 0 : next;
     });
   }, playing);
@@ -73,6 +74,7 @@ export default function CreepClosureChart() {
         <Slider label="Differential stress" min={5} max={25} step={1} value={ds} onChange={setDs} format={(v) => `${v} MPa`} />
         <Slider label="Temperature" min={30} max={90} step={5} value={temp} onChange={setTemp} format={(v) => `${v} °C`} />
         <PlayButton playing={playing} onToggle={() => setPlaying((s) => !s)} onReset={() => { setPlaying(false); setP(MAX_T); }} playLabel="Animate" pauseLabel="Pause" />
+        <SpeedControl value={speed} onChange={setSpeed} />
       </div>
 
       <div className="viz-canvas" ref={ref} style={{ minHeight: H }}>

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useResizeObserver, useAnimationLoop } from './_shared/hooks';
-import { SegmentedControl, Slider, PlayButton, StatGrid } from './_shared/controls';
+import { SegmentedControl, Slider, PlayButton, SpeedControl, StatGrid } from './_shared/controls';
 
 type Mode = 'salt' | 'trona';
 
@@ -47,10 +47,11 @@ export default function CavernCrossSection() {
   const [mode, setMode] = useState<Mode>('salt');
   const [fill, setFill] = useState(0.55);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
   const phase = useRef(Math.PI);
 
   useAnimationLoop((dt) => {
-    phase.current += dt / 1700;
+    phase.current += (dt / 1700) * speed;
     setFill(0.5 - 0.5 * Math.cos(phase.current));
   }, playing);
 
@@ -126,6 +127,7 @@ export default function CavernCrossSection() {
           playLabel="Cycle"
           pauseLabel="Pause"
         />
+        <SpeedControl value={speed} onChange={setSpeed} />
       </div>
 
       <div className="viz-canvas" ref={ref} style={{ minHeight: H }}>

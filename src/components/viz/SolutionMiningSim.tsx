@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useResizeObserver, useAnimationLoop } from './_shared/hooks';
-import { SegmentedControl, Slider, PlayButton, StatGrid } from './_shared/controls';
+import { SegmentedControl, Slider, PlayButton, SpeedControl, StatGrid } from './_shared/controls';
 
 type Mode = 'direct' | 'reverse';
 const H = 440;
@@ -11,10 +11,11 @@ export default function SolutionMiningSim() {
   const [blanket, setBlanket] = useState(0.25);
   const [t, setT] = useState(0.7);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   useAnimationLoop((dt) => {
     setT((prev) => {
-      const next = prev + dt / 6000;
+      const next = prev + (dt / 6000) * speed;
       return next >= 1 ? 0 : next;
     });
   }, playing);
@@ -69,6 +70,7 @@ export default function SolutionMiningSim() {
         <Slider label="Blanket depth" min={0} max={1} step={0.01} value={blanket} onChange={setBlanket} format={(v) => `${Math.round(v * 100)}%`} />
         <Slider label="Leaching time" min={0.05} max={1} step={0.01} value={t} onChange={(v) => { setPlaying(false); setT(v); }} format={(v) => `${Math.round(v * 36)} mo`} />
         <PlayButton playing={playing} onToggle={() => setPlaying((p) => !p)} onReset={() => { setPlaying(false); setT(0.05); }} playLabel="Leach" pauseLabel="Pause" />
+        <SpeedControl value={speed} onChange={setSpeed} />
       </div>
 
       <div className="viz-canvas" ref={ref} style={{ minHeight: H }}>

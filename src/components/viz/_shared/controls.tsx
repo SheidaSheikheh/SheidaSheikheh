@@ -137,6 +137,30 @@ export function PlayButton({
   );
 }
 
+/* ---- Speed control ------------------------------------------------------ */
+export function SpeedControl({
+  value,
+  onChange,
+  options = [0.5, 1, 2],
+}: {
+  value: number;
+  onChange: (v: number) => void;
+  options?: number[];
+}) {
+  return (
+    <div className="viz-control">
+      <span className="viz-control-label">Speed</span>
+      <div className="viz-seg" role="group" aria-label="Animation speed">
+        {options.map((o) => (
+          <button key={o} type="button" aria-pressed={value === o} onClick={() => onChange(o)}>
+            {o}×
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 /* ---- Legend ------------------------------------------------------------- */
 export interface LegendItem {
   color: string;

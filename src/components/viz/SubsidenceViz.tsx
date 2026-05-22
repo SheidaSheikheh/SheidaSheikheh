@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useResizeObserver, useAnimationLoop } from './_shared/hooks';
-import { PlayButton, Slider, StatGrid } from './_shared/controls';
+import { PlayButton, Slider, SpeedControl, StatGrid } from './_shared/controls';
 
 const MAX_T = 50; // years
 const H = 290;
@@ -9,10 +9,11 @@ export default function SubsidenceViz() {
   const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const [t, setT] = useState(MAX_T);
   const [playing, setPlaying] = useState(false);
+  const [speed, setSpeed] = useState(1);
 
   useAnimationLoop((dt) => {
     setT((prev) => {
-      const next = prev + (dt / 1000) * 12;
+      const next = prev + (dt / 1000) * 12 * speed;
       return next >= MAX_T ? 0 : next;
     });
   }, playing);
@@ -42,6 +43,7 @@ export default function SubsidenceViz() {
     <div className="viz">
       <div className="viz-controls">
         <PlayButton playing={playing} onToggle={() => setPlaying((s) => !s)} onReset={() => { setPlaying(false); setT(0); }} playLabel="Run years" pauseLabel="Pause" />
+        <SpeedControl value={speed} onChange={setSpeed} />
         <Slider label="Time" min={0} max={MAX_T} step={1} value={t} onChange={(v) => { setPlaying(false); setT(v); }} format={(v) => `${v.toFixed(0)} yr`} />
       </div>
 
