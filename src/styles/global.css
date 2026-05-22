@@ -20,7 +20,7 @@
 
   /* Layout scale */
   --maxw: 72rem;
-  --maxw-prose: 42rem;
+  --maxw-prose: 44rem;
   --pad: clamp(1.1rem, 4vw, 2.5rem);
   --radius: 12px;
   --radius-sm: 8px;

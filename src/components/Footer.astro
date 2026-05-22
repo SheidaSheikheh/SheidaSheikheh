@@ -1,83 +1,32 @@
 ---
 import SocialLinks from './SocialLinks.astro';
-import Logo from './Logo.astro';
 import { profile } from '../data/profile';
 const year = new Date().getFullYear();
 ---
 
 <footer class="footer">
   <div class="container footer-inner">
-    <div class="footer-id">
-      <Logo size={40} />
-      <div>
-        <p class="footer-name">{profile.name}</p>
-        <p class="muted footer-sub">{profile.title} · {profile.affiliation}</p>
-      </div>
-    </div>
-
-    <nav class="footer-nav" aria-label="Footer">
-      <a href="/">Home</a>
-      <a href="/about">About</a>
-      <a href="/blog">Writing</a>
-    </nav>
-
+    <p class="footer-copy">© {year} {profile.name}</p>
     <SocialLinks size="sm" />
-  </div>
-
-  <div class="container footer-base">
-    <p class="muted">© {year} {profile.name}. All rights reserved.</p>
-    <p class="muted footer-built">Built with Astro · Hosted on GitHub Pages</p>
   </div>
 </footer>
 
 <style>
   .footer {
-    margin-top: clamp(4rem, 10vw, 8rem);
     border-top: 1px solid var(--border);
-    background: var(--bg-sunken);
-    padding-block: 2.5rem 1.75rem;
+    padding-block: 1rem;
+    margin-top: clamp(3rem, 8vw, 6rem);
     font-family: var(--font-system);
   }
   .footer-inner {
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 1.5rem;
-  }
-  .footer-id {
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-  }
-  .footer-name {
-    font-weight: 600;
-    font-size: 1.05rem;
-  }
-  .footer-sub {
-    font-size: 0.9rem;
-    margin-top: 0.15rem;
-  }
-  .footer-nav {
-    display: flex;
-    gap: 1.25rem;
-  }
-  .footer-nav a {
-    color: var(--fg-muted);
-    text-decoration: none;
-    font-size: 0.95rem;
-  }
-  .footer-nav a:hover {
-    color: var(--accent);
-  }
-  .footer-base {
-    display: flex;
+    gap: 1rem;
     flex-wrap: wrap;
-    justify-content: space-between;
-    gap: 0.5rem;
-    margin-top: 2rem;
-    padding-top: 1.5rem;
-    border-top: 1px solid var(--border);
-    font-size: 0.85rem;
+  }
+  .footer-copy {
+    font-size: 0.8rem;
+    color: var(--fg-faint);
   }
 </style>

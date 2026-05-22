@@ -90,9 +90,7 @@ const personLd = {
         try {
           var t = localStorage.getItem('theme');
           if (t !== 'light' && t !== 'dark' && t !== 'sepia') {
-            t = matchMedia('(prefers-color-scheme: dark)').matches
-              ? 'dark'
-              : 'light';
+            t = 'light';
           }
           document.documentElement.setAttribute('data-theme', t);
           var f = localStorage.getItem('font') || 'system';

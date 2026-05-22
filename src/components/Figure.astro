@@ -1,7 +1,7 @@
 ---
 interface Props {
   caption?: string;
-  /** let an interactive figure span wider than the prose column */
+  /** make an interactive figure span even wider than the default break-out */
   wide?: boolean;
 }
 const { caption, wide = false } = Astro.props;
@@ -25,10 +25,16 @@ const { caption, wide = false } = Astro.props;
     padding: clamp(0.75rem, 2vw, 1.25rem);
     overflow: hidden;
   }
-  @media (min-width: 1100px) {
+  /* Break figures out of the reading column and centre them on the viewport.
+     Works because the prose column is itself viewport-centred. */
+  @media (min-width: 1000px) {
+    .figure {
+      width: min(54rem, 92vw);
+      margin-left: 50%;
+      transform: translateX(-50%);
+    }
     .figure--wide {
-      width: min(58rem, 92vw);
-      margin-inline: calc(50% - min(29rem, 46vw));
+      width: min(66rem, 94vw);
     }
   }
 </style>
