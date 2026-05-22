@@ -20,8 +20,8 @@ interface Props {
   description?: string;
   image?: string;
   article?: boolean;
-  /** when true, the page provides its own full-bleed first section */
-  bleed?: boolean;
+  /** single-screen page: hero fills the space between nav and footer, no scroll */
+  fullscreen?: boolean;
 }
 
 const {
@@ -29,7 +29,7 @@ const {
   description = profile.tagline,
   image = '/og.png',
   article = false,
-  bleed = false,
+  fullscreen = false,
 } = Astro.props;
 
 const pageTitle = title
@@ -102,16 +102,9 @@ const personLd = {
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <Nav />
-    <main id="main" class:list={{ 'main--bleed': bleed }}>
+    <main id="main" class:list={{ 'main--full': fullscreen }}>
       <slot />
     </main>
     <Footer />
   </body>
 </html>
-
-<style>
-  /* Pull a full-bleed hero up under the transparent sticky nav. */
-  .main--bleed {
-    margin-top: calc(var(--nav-h) * -1);
-  }
-</style>

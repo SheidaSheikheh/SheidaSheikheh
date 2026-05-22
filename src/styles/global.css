@@ -166,6 +166,9 @@ html {
 
 body {
   min-height: 100svh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-body);
@@ -227,6 +230,16 @@ h4 {
   max-width: var(--maxw);
   margin-inline: auto;
   padding-inline: var(--pad);
+}
+
+/* Sticky-footer scaffold: main grows so the footer always sits at the bottom. */
+#main {
+  flex: 1 0 auto;
+}
+/* Single-screen pages: let the hero fill the space between nav and footer. */
+#main.main--full {
+  display: flex;
+  flex-direction: column;
 }
 
 .section {

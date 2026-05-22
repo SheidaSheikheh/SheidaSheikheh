@@ -13,9 +13,10 @@ const year = new Date().getFullYear();
 
 <style>
   .footer {
+    flex-shrink: 0;
     border-top: 1px solid var(--border);
-    padding-block: 1rem;
-    margin-top: clamp(3rem, 8vw, 6rem);
+    padding-block: 0.7rem;
+    margin-top: clamp(2rem, 6vw, 4rem);
     font-family: var(--font-system);
   }
   .footer-inner {
@@ -26,7 +27,7 @@ const year = new Date().getFullYear();
     flex-wrap: wrap;
   }
   .footer-copy {
-    font-size: 0.8rem;
+    font-size: 0.72rem;
     color: var(--fg-faint);
   }
 </style>

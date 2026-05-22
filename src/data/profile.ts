@@ -11,7 +11,6 @@ export interface Profile {
   title: string;
   affiliation: string;
   affiliationUrl: string;
-  location: string;
   /** one-line summary used in the hero + meta description */
   tagline: string;
   /** longer bio, one entry per paragraph */
@@ -27,7 +26,6 @@ export const profile: Profile = {
   title: 'PhD Candidate · Energy & Petroleum Engineering',
   affiliation: 'University of Wyoming',
   affiliationUrl: 'https://www.uwyo.edu/',
-  location: 'Laramie, Wyoming, USA',
   tagline:
     'PhD candidate studying how the subsurface can safely store hydrogen — from trona and salt caverns to the geomechanics that keep them stable.',
   bio: [
