@@ -1,0 +1,272 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import { Icon } from 'astro-icon/components';
+import { formatDate, isoDate, readingTime } from '../utils/format';
+import { profile } from '../data/profile';
+import type { CollectionEntry } from 'astro:content';
+import type { MarkdownHeading } from 'astro';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  headings: MarkdownHeading[];
+  older?: CollectionEntry<'blog'>;
+  newer?: CollectionEntry<'blog'>;
+}
+const { post, headings, older, newer } = Astro.props;
+const { title, description, pubDate, updatedDate, tags, heroIcon } = post.data;
+const minutes = readingTime(post.body ?? '');
+const toc = headings.filter((h) => h.depth === 2);
+
+const articleLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: title,
+  description,
+  datePublished: pubDate.toISOString(),
+  ...(updatedDate ? { dateModified: updatedDate.toISOString() } : {}),
+  author: { '@type': 'Person', name: profile.name },
+  keywords: tags.join(', '),
+  url: new URL(Astro.url.pathname, Astro.site).href,
+};
+---
+
+<BaseLayout title={title} description={description} article={true}>
+  <article class="post">
+    <header class="post-head">
+      <div class="container post-head-inner">
+        <a class="post-back" href="/blog">
+          <Icon name="lucide:arrow-left" aria-hidden="true" />
+          All writing
+        </a>
+        <div class="post-meta">
+          <span class="post-icon" aria-hidden="true"><Icon name={heroIcon} /></span>
+          <time datetime={isoDate(pubDate)}>{formatDate(pubDate)}</time>
+          <span aria-hidden="true">·</span>
+          <span>{minutes} min read</span>
+        </div>
+        <h1>{title}</h1>
+        <p class="post-desc">{description}</p>
+        {
+          tags.length > 0 && (
+            <ul class="post-tags">
+              {tags.map((t) => (
+                <li class="chip">{t}</li>
+              ))}
+            </ul>
+          )
+        }
+      </div>
+    </header>
+
+    <div class="container post-grid">
+      {
+        toc.length > 0 && (
+          <aside class="post-toc" aria-label="On this page">
+            <p class="post-toc-title">On this page</p>
+            <nav>
+              <ul>
+                {toc.map((h) => (
+                  <li>
+                    <a href={`#${h.slug}`}>{h.text}</a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </aside>
+        )
+      }
+      <div class="prose post-prose">
+        <slot />
+      </div>
+    </div>
+
+    <nav class="container post-nav" aria-label="More writing">
+      {
+        newer ? (
+          <a class="post-nav-link" href={`/blog/${newer.id}`}>
+            <span class="post-nav-dir">
+              <Icon name="lucide:arrow-left" aria-hidden="true" /> Newer
+            </span>
+            <span class="post-nav-title">{newer.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        older && (
+          <a class="post-nav-link post-nav-link--right" href={`/blog/${older.id}`}>
+            <span class="post-nav-dir">
+              Older <Icon name="lucide:arrow-right" aria-hidden="true" />
+            </span>
+            <span class="post-nav-title">{older.data.title}</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleLd)} />
+</BaseLayout>
+
+<style>
+  .post-head {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+    padding-bottom: 1rem;
+  }
+  .post-head-inner {
+    max-width: 48rem;
+  }
+  .post-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-system);
+    font-size: 0.92rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    margin-bottom: 1.5rem;
+  }
+  .post-back:hover {
+    color: var(--accent);
+  }
+  .post-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-system);
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    margin-bottom: 0.9rem;
+  }
+  .post-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 8px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.05rem;
+  }
+  .post-head h1 {
+    font-size: clamp(1.9rem, 5vw, 3rem);
+    line-height: 1.1;
+  }
+  .post-desc {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: var(--fg-muted);
+    line-height: 1.5;
+  }
+  .post-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0;
+    margin-top: 1.4rem;
+  }
+
+  .post-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    padding-top: 1.5rem;
+  }
+  .post-prose {
+    grid-column: 1;
+  }
+  .post-toc {
+    display: none;
+  }
+
+  @media (min-width: 1140px) {
+    .post-grid {
+      grid-template-columns: 15rem minmax(0, 42rem);
+      justify-content: center;
+      gap: 3.5rem;
+      align-items: start;
+    }
+    .post-prose {
+      margin-inline: 0;
+    }
+    .post-toc {
+      display: block;
+      position: sticky;
+      top: calc(var(--nav-h) + 1.5rem);
+      font-family: var(--font-system);
+    }
+    .post-toc-title {
+      font-size: 0.75rem;
+      font-weight: 650;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--fg-faint);
+      margin-bottom: 0.7rem;
+    }
+    .post-toc ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 0.55rem;
+      border-left: 1px solid var(--border);
+    }
+    .post-toc a {
+      display: block;
+      padding-left: 0.9rem;
+      margin-left: -1px;
+      border-left: 2px solid transparent;
+      color: var(--fg-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+    .post-toc a:hover {
+      color: var(--accent);
+      border-left-color: var(--accent);
+    }
+  }
+
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+    flex-wrap: wrap;
+  }
+  .post-nav-link {
+    display: grid;
+    gap: 0.3rem;
+    max-width: 22rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    text-decoration: none;
+    transition: border-color 0.18s ease, transform 0.18s ease;
+  }
+  .post-nav-link:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .post-nav-link--right {
+    text-align: right;
+  }
+  .post-nav-dir {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-system);
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+  }
+  .post-nav-link--right .post-nav-dir {
+    justify-content: flex-end;
+  }
+  .post-nav-title {
+    color: var(--fg);
+    font-weight: 600;
+    line-height: 1.3;
+  }
+</style>

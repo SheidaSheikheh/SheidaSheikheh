@@ -1,0 +1,119 @@
+---
+// Self-hosted fonts (Fontsource). Variable fonts ship one file each.
+import '@fontsource-variable/newsreader';
+import '@fontsource-variable/jetbrains-mono';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import '@fontsource/ubuntu/400.css';
+import '@fontsource/ubuntu/500.css';
+import '@fontsource/ubuntu/700.css';
+import '../styles/global.css';
+import '../styles/viz.css';
+
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { profile, socialLinks } from '../data/profile';
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+  article?: boolean;
+  /** when true, the page provides its own full-bleed first section */
+  bleed?: boolean;
+}
+
+const {
+  title,
+  description = profile.tagline,
+  image = '/og.png',
+  article = false,
+  bleed = false,
+} = Astro.props;
+
+const pageTitle = title
+  ? `${title} · ${profile.name}`
+  : `${profile.name} · ${profile.title}`;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+const ogImage = new URL(image, Astro.site).href;
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.title,
+  affiliation: { '@type': 'Organization', name: profile.affiliation },
+  url: Astro.site?.href,
+  sameAs: socialLinks.map((s) => s.href),
+  knowsAbout: profile.interests,
+};
+---
+
+<!doctype html>
+<html lang="en" data-theme="light" data-font="system">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={profile.name} />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:site_name" content={profile.name} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title={`${profile.name} — Writing`}
+      href="/rss.xml"
+    />
+
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personLd)} />
+
+    {/* Apply theme + font before paint to avoid a flash. */}
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('theme');
+          if (t !== 'light' && t !== 'dark' && t !== 'sepia') {
+            t = matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light';
+          }
+          document.documentElement.setAttribute('data-theme', t);
+          var f = localStorage.getItem('font') || 'system';
+          document.documentElement.setAttribute('data-font', f);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <Nav />
+    <main id="main" class:list={{ 'main--bleed': bleed }}>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
+
+<style>
+  /* Pull a full-bleed hero up under the transparent sticky nav. */
+  .main--bleed {
+    margin-top: calc(var(--nav-h) * -1);
+  }
+</style>

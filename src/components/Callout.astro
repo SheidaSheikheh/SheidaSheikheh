@@ -1,0 +1,73 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  type?: 'note' | 'key' | 'tip' | 'warning';
+  title?: string;
+}
+const { type = 'note', title } = Astro.props;
+
+const config = {
+  note: { icon: 'lucide:info', label: 'Note' },
+  key: { icon: 'lucide:key-round', label: 'Key idea' },
+  tip: { icon: 'lucide:lightbulb', label: 'Try this' },
+  warning: { icon: 'lucide:triangle-alert', label: 'Watch out' },
+} as const;
+const c = config[type];
+---
+
+<aside class:list={['callout', `callout--${type}`]}>
+  <p class="callout-head">
+    <Icon name={c.icon} aria-hidden="true" />
+    <span>{title ?? c.label}</span>
+  </p>
+  <div class="callout-body">
+    <slot />
+  </div>
+</aside>
+
+<style>
+  .callout {
+    margin-block: 1.8em;
+    padding: 1rem 1.2rem;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    background: var(--bg-sunken);
+    font-size: 0.98rem;
+  }
+  .callout--key {
+    border-left-color: var(--accent);
+    background: var(--accent-soft);
+  }
+  .callout--warning {
+    border-left-color: var(--viz-warn);
+  }
+  .callout--tip {
+    border-left-color: var(--viz-good);
+  }
+  .callout-head {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.35rem;
+    font-family: var(--font-system);
+    font-weight: 650;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+  }
+  .callout--key .callout-head {
+    color: var(--accent);
+  }
+  .callout-head :global(svg) {
+    font-size: 1.1em;
+  }
+  .callout-body :global(> :first-child) {
+    margin-top: 0;
+  }
+  .callout-body :global(> :last-child) {
+    margin-bottom: 0;
+  }
+</style>

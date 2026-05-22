@@ -1,0 +1,196 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import PublicationList from '../components/PublicationList.astro';
+import { profile } from '../data/profile';
+import { scholarUrl } from '../data/publications';
+
+const themes = [
+  {
+    icon: 'lucide:droplets',
+    title: 'Hydrogen storage',
+    body: 'Evaluating where large volumes of hydrogen can be stored underground — engineered caverns in salt and trona, plus depleted reservoirs and aquifers — and how to choose between them.',
+  },
+  {
+    icon: 'lucide:layers',
+    title: 'Reservoir geomechanics',
+    body: 'Understanding the stresses, deformation, and time-dependent creep that govern whether a cavern or reservoir stays stable and tight over decades of cyclic operation.',
+  },
+  {
+    icon: 'lucide:activity',
+    title: 'Engineering & simulation',
+    body: 'Combining reservoir engineering with numerical simulation to predict capacity, deliverability, and the safe operating envelope of subsurface storage.',
+  },
+];
+---
+
+<BaseLayout title="About" description={`About ${profile.name} — ${profile.title}, ${profile.affiliation}.`}>
+  <section class="section about-hero">
+    <div class="container about-hero-grid">
+      <div class="about-portrait" aria-hidden="true">
+        <span class="about-monogram">SS</span>
+      </div>
+      <div>
+        <p class="eyebrow">About</p>
+        <h1 class="about-title">{profile.name}</h1>
+        <p class="about-role">{profile.title}</p>
+        <p class="about-affil">
+          <Icon name="lucide:graduation-cap" aria-hidden="true" />
+          <a href={profile.affiliationUrl} target="_blank" rel="noopener noreferrer">
+            {profile.affiliation}
+          </a>
+          <span class="about-dot">·</span>
+          <Icon name="lucide:map-pin" aria-hidden="true" />
+          {profile.location}
+        </p>
+        <SocialLinks size="md" withLabels={true} class="about-social" />
+      </div>
+    </div>
+  </section>
+
+  <section class="container about-body">
+    <div class="prose">
+      {profile.bio.map((p) => <p>{p}</p>)}
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Focus</p>
+          <h2>Research themes</h2>
+        </div>
+      </div>
+      <div class="theme-grid">
+        {
+          themes.map((t) => (
+            <article class="theme-card surface">
+              <span class="theme-icon" aria-hidden="true">
+                <Icon name={t.icon} />
+              </span>
+              <h3>{t.title}</h3>
+              <p class="muted">{t.body}</p>
+            </article>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--sunken">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Research</p>
+          <h2>Publications</h2>
+        </div>
+        <a class="section-link" href={scholarUrl} target="_blank" rel="noopener noreferrer">
+          Google Scholar <Icon name="lucide:arrow-up-right" aria-hidden="true" />
+        </a>
+      </div>
+      <PublicationList />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about-hero {
+    padding-bottom: 1rem;
+  }
+  .about-hero-grid {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+  }
+  @media (min-width: 720px) {
+    .about-hero-grid {
+      grid-template-columns: auto 1fr;
+      gap: 2.5rem;
+    }
+  }
+  .about-portrait {
+    width: clamp(7rem, 22vw, 10rem);
+    aspect-ratio: 1;
+    border-radius: 20px;
+    display: grid;
+    place-items: center;
+    background: linear-gradient(150deg, var(--accent), var(--accent-strong));
+    box-shadow: var(--shadow);
+  }
+  .about-monogram {
+    font-family: var(--font-system);
+    font-weight: 700;
+    font-size: clamp(2rem, 7vw, 3rem);
+    color: #fff;
+    letter-spacing: 0.02em;
+  }
+  html[data-theme='dark'] .about-monogram {
+    color: #04201d;
+  }
+  .about-title {
+    font-size: clamp(2.1rem, 6vw, 3.2rem);
+    line-height: 1.05;
+    margin-top: 0.4rem;
+  }
+  .about-role {
+    margin-top: 0.6rem;
+    font-size: 1.15rem;
+    color: var(--fg-muted);
+  }
+  .about-affil {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.6rem;
+    font-family: var(--font-system);
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+  }
+  .about-affil a {
+    color: var(--fg-muted);
+    text-decoration: none;
+  }
+  .about-affil a:hover {
+    color: var(--accent);
+  }
+  .about-dot {
+    color: var(--fg-faint);
+  }
+  .about-social {
+    margin-top: 1.4rem;
+  }
+
+  .about-body {
+    padding-block: 1rem 1.5rem;
+  }
+  .about-body .prose {
+    margin-inline: 0;
+  }
+
+  .theme-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+  }
+  .theme-card {
+    padding: 1.5rem;
+  }
+  .theme-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.35rem;
+    margin-bottom: 1rem;
+  }
+  .theme-card h3 {
+    font-size: 1.18rem;
+    margin-bottom: 0.5rem;
+  }
+</style>

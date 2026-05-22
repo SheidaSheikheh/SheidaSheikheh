@@ -1,0 +1,267 @@
+/* =========================================================================
+   Visualization chrome — shared styles for the React viz islands.
+   All colors come from theme tokens so charts follow light/dark/sepia.
+   ========================================================================= */
+
+.viz {
+  font-family: var(--font-system);
+  color: var(--fg);
+  display: grid;
+  gap: 1rem;
+}
+
+.viz-canvas {
+  width: 100%;
+}
+.viz-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* text inside charts */
+.viz text {
+  fill: var(--fg);
+  font-family: var(--font-system);
+}
+.viz-axis-line {
+  stroke: var(--viz-grid);
+  stroke-width: 1;
+}
+.viz-grid-line {
+  stroke: var(--viz-grid);
+  stroke-width: 1;
+  stroke-dasharray: 2 4;
+}
+.viz-tick {
+  fill: var(--fg-muted);
+  font-size: 12px;
+}
+.viz-axis-title {
+  fill: var(--fg-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ---- Controls row ------------------------------------------------------- */
+.viz-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+.viz-control {
+  display: grid;
+  gap: 0.35rem;
+}
+.viz-control--row {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.viz-control-label {
+  font-size: 0.72rem;
+  font-weight: 650;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+/* segmented control */
+.viz-seg {
+  display: inline-flex;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 0.25rem;
+  gap: 0.2rem;
+}
+.viz-seg button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 0;
+  background: transparent;
+  color: var(--fg-muted);
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 6px;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+.viz-seg button:hover {
+  color: var(--fg);
+}
+.viz-seg button[aria-pressed='true'] {
+  background: var(--bg-elev);
+  color: var(--accent);
+  box-shadow: var(--shadow);
+}
+.viz-seg svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* icon / action button */
+.viz-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--border);
+  background: var(--bg-elev);
+  color: var(--fg);
+  font: inherit;
+  font-size: 0.9rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: 8px;
+  transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+}
+.viz-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.viz-btn--primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+html[data-theme='dark'] .viz-btn--primary {
+  color: #04201d;
+}
+.viz-btn--primary:hover {
+  background: var(--accent-strong);
+  border-color: var(--accent-strong);
+  color: #fff;
+}
+html[data-theme='dark'] .viz-btn--primary:hover {
+  color: #04201d;
+}
+.viz-btn svg {
+  width: 1.05em;
+  height: 1.05em;
+}
+
+/* slider */
+.viz-slider {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 11rem;
+}
+.viz-slider-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+}
+.viz-slider-value {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-size: 0.85rem;
+}
+.viz-slider input[type='range'] {
+  width: 100%;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+/* toggle (checkbox) */
+.viz-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  user-select: none;
+}
+.viz-toggle input {
+  accent-color: var(--accent);
+  width: 1.05rem;
+  height: 1.05rem;
+  cursor: pointer;
+}
+
+/* legend */
+.viz-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  color: var(--fg-muted);
+}
+.viz-legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+.viz-swatch {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 3px;
+  flex: none;
+}
+.viz-swatch--line {
+  height: 0.3rem;
+  width: 1.1rem;
+  border-radius: 2px;
+}
+
+/* stat readouts */
+.viz-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+.viz-stat {
+  flex: 1 1 7rem;
+  min-width: 6.5rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--bg-elev);
+}
+.viz-stat-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.viz-stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--fg);
+  margin-top: 0.15rem;
+  line-height: 1.1;
+}
+.viz-stat-value small {
+  font-size: 0.8rem;
+  color: var(--fg-muted);
+  font-weight: 400;
+}
+
+/* small note under a chart */
+.viz-note {
+  font-size: 0.8rem;
+  color: var(--fg-faint);
+  line-height: 1.5;
+}
+
+/* hover tooltip */
+.viz-tip {
+  position: absolute;
+  pointer-events: none;
+  transform: translate(-50%, -120%);
+  background: var(--bg-elev);
+  border: 1px solid var(--border-strong);
+  border-radius: 8px;
+  padding: 0.45rem 0.6rem;
+  font-size: 0.82rem;
+  box-shadow: var(--shadow);
+  white-space: nowrap;
+  z-index: 5;
+}
+.viz-canvas-wrap {
+  position: relative;
+}

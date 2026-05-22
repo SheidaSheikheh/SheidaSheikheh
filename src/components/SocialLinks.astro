@@ -1,0 +1,79 @@
+---
+import { Icon } from 'astro-icon/components';
+import { socialLinks } from '../data/profile';
+
+interface Props {
+  size?: 'sm' | 'md' | 'lg';
+  withLabels?: boolean;
+  class?: string;
+}
+const { size = 'md', withLabels = false, class: className = '' } = Astro.props;
+---
+
+<ul class:list={['social', `social--${size}`, { 'social--labeled': withLabels }, className]}>
+  {
+    socialLinks.map((s) => (
+      <li>
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={s.label}
+          title={s.label}
+        >
+          <Icon name={s.icon} aria-hidden="true" />
+          {withLabels && <span>{s.label}</span>}
+        </a>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .social {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .social a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--fg-muted);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    border-radius: 999px;
+    transition: color 0.18s ease, border-color 0.18s ease,
+      background-color 0.18s ease, transform 0.18s ease;
+  }
+  .social a:hover {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+    background: var(--accent-soft);
+    transform: translateY(-1px);
+  }
+  .social :global(svg) {
+    flex: none;
+  }
+
+  /* icon-only pills */
+  .social--sm a { width: 2.1rem; height: 2.1rem; justify-content: center; font-size: 1rem; }
+  .social--md a { width: 2.6rem; height: 2.6rem; justify-content: center; font-size: 1.18rem; }
+  .social--lg a { width: 3rem; height: 3rem; justify-content: center; font-size: 1.35rem; }
+
+  /* labeled variant overrides the fixed square sizing */
+  .social--labeled a {
+    width: auto;
+    height: auto;
+    padding: 0.5rem 0.95rem;
+    font-size: 0.95rem;
+    font-family: var(--font-system);
+  }
+  .social--labeled span {
+    white-space: nowrap;
+  }
+</style>

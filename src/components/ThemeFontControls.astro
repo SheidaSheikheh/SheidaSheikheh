@@ -1,0 +1,218 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const themes = [
+  { id: 'light', label: 'Light', icon: 'lucide:sun' },
+  { id: 'sepia', label: 'Sepia', icon: 'lucide:coffee' },
+  { id: 'dark', label: 'Dark', icon: 'lucide:moon' },
+];
+const fonts = [
+  { id: 'system', label: 'System' },
+  { id: 'roboto', label: 'Roboto' },
+  { id: 'ubuntu', label: 'Ubuntu' },
+  { id: 'newsreader', label: 'Newsreader' },
+  { id: 'mono', label: 'Mono' },
+];
+---
+
+<details class="appearance" data-appearance>
+  <summary class="appearance-trigger" aria-label="Appearance settings" title="Theme & font">
+    <Icon name="lucide:sliders-horizontal" aria-hidden="true" />
+  </summary>
+  <div class="appearance-panel surface">
+    <div class="appearance-group" role="group" aria-label="Theme">
+      <span class="appearance-label">Theme</span>
+      <div class="seg">
+        {
+          themes.map((t) => (
+            <button type="button" data-theme-set={t.id} aria-label={t.label} title={t.label}>
+              <Icon name={t.icon} aria-hidden="true" />
+            </button>
+          ))
+        }
+      </div>
+    </div>
+    <div class="appearance-group" role="group" aria-label="Font">
+      <span class="appearance-label">Font</span>
+      <div class="font-list">
+        {
+          fonts.map((f) => (
+            <button type="button" data-font-set={f.id} data-font-name={f.id}>
+              {f.label}
+            </button>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</details>
+
+<style>
+  .appearance {
+    position: relative;
+  }
+  .appearance-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--fg-muted);
+    font-size: 1.1rem;
+    list-style: none;
+    transition: color 0.18s ease, border-color 0.18s ease;
+  }
+  .appearance-trigger::-webkit-details-marker {
+    display: none;
+  }
+  .appearance-trigger:hover {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 45%, var(--border));
+  }
+  .appearance[open] .appearance-trigger {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .appearance-panel {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 0.55rem);
+    z-index: 60;
+    width: 16rem;
+    padding: 0.9rem;
+    box-shadow: var(--shadow);
+    display: grid;
+    gap: 0.9rem;
+    font-family: var(--font-system);
+    animation: pop 0.16s ease;
+  }
+  @keyframes pop {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .appearance-group {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .appearance-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+  }
+
+  .seg {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.35rem;
+    background: var(--bg-sunken);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.3rem;
+  }
+  .seg button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.45rem;
+    border: 0;
+    border-radius: 7px;
+    background: transparent;
+    color: var(--fg-muted);
+    font-size: 1.05rem;
+    transition: background-color 0.16s ease, color 0.16s ease;
+  }
+  .seg button:hover {
+    color: var(--fg);
+  }
+  .seg button[aria-pressed='true'] {
+    background: var(--bg-elev);
+    color: var(--accent);
+    box-shadow: var(--shadow);
+  }
+
+  .font-list {
+    display: grid;
+    gap: 0.25rem;
+  }
+  .font-list button {
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--fg-muted);
+    font-size: 1rem;
+    transition: background-color 0.16s ease, color 0.16s ease,
+      border-color 0.16s ease;
+  }
+  .font-list button:hover {
+    background: var(--bg-sunken);
+    color: var(--fg);
+  }
+  .font-list button[aria-pressed='true'] {
+    color: var(--accent);
+    border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+    background: var(--accent-soft);
+  }
+  /* preview each option in its own typeface */
+  .font-list button[data-font-name='system'] { font-family: var(--font-system); }
+  .font-list button[data-font-name='roboto'] { font-family: var(--font-roboto); }
+  .font-list button[data-font-name='ubuntu'] { font-family: var(--font-ubuntu); }
+  .font-list button[data-font-name='newsreader'] { font-family: var(--font-newsreader); font-size: 1.08rem; }
+  .font-list button[data-font-name='mono'] { font-family: var(--font-mono); font-size: 0.92rem; }
+</style>
+
+<script>
+  const root = document.documentElement;
+
+  function sync() {
+    const t = root.getAttribute('data-theme');
+    const f = root.getAttribute('data-font') || 'system';
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-theme-set]')
+      .forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.themeSet === t))
+      );
+    document
+      .querySelectorAll<HTMLButtonElement>('[data-font-set]')
+      .forEach((b) =>
+        b.setAttribute('aria-pressed', String(b.dataset.fontSet === f))
+      );
+  }
+
+  function setAttr(key: 'theme' | 'font', value: string) {
+    root.setAttribute(`data-${key}`, value);
+    try {
+      localStorage.setItem(key, value);
+    } catch {
+      /* private mode — ignore */
+    }
+    sync();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-theme-set]').forEach((b) =>
+    b.addEventListener('click', () => setAttr('theme', b.dataset.themeSet!))
+  );
+  document.querySelectorAll<HTMLButtonElement>('[data-font-set]').forEach((b) =>
+    b.addEventListener('click', () => setAttr('font', b.dataset.fontSet!))
+  );
+
+  // close the popover on outside click / Escape
+  const details = document.querySelector<HTMLDetailsElement>('[data-appearance]');
+  document.addEventListener('click', (e) => {
+    if (details?.open && !details.contains(e.target as Node)) details.open = false;
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && details?.open) details.open = false;
+  });
+
+  sync();
+</script>

@@ -1,0 +1,293 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SocialLinks from '../components/SocialLinks.astro';
+import PostCard from '../components/PostCard.astro';
+import PublicationList from '../components/PublicationList.astro';
+import { profile } from '../data/profile';
+import { scholarUrl } from '../data/publications';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = posts.slice(0, 3);
+---
+
+<BaseLayout bleed={true}>
+  {/* ---------------------------------------------------------------- Hero */}
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <div class="hero-glow"></div>
+      <svg class="hero-strata" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMax slice">
+        <path d="M0,150 C300,110 520,180 760,150 C980,124 1100,165 1200,150 L1200,480 L0,480 Z" fill="var(--viz-overburden)" opacity="0.30"></path>
+        <path d="M0,235 C260,205 470,255 720,232 C960,210 1080,245 1200,232 L1200,480 L0,480 Z" fill="var(--viz-caprock)" opacity="0.28"></path>
+        <path d="M0,320 C280,300 520,335 780,318 C1000,304 1110,330 1200,320 L1200,480 L0,480 Z" fill="var(--viz-trona)" opacity="0.34"></path>
+        <ellipse cx="720" cy="395" rx="120" ry="74" fill="var(--viz-cavern)" stroke="var(--viz-h2)" stroke-opacity="0.5" stroke-width="2"></ellipse>
+      </svg>
+      <span class="bubble b1"></span>
+      <span class="bubble b2"></span>
+      <span class="bubble b3"></span>
+      <span class="bubble b4"></span>
+      <span class="bubble b5"></span>
+    </div>
+
+    <div class="container hero-inner">
+      <p class="eyebrow hero-eyebrow">{profile.affiliation} · Energy &amp; Petroleum Engineering</p>
+      <h1 class="hero-name">{profile.name}</h1>
+      <p class="hero-tagline">{profile.tagline}</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/blog">
+          Read the writing
+          <Icon name="lucide:arrow-right" aria-hidden="true" />
+        </a>
+        <a class="btn btn-ghost" href="/about">About Sheida</a>
+      </div>
+      <SocialLinks size="md" class="hero-social" />
+    </div>
+
+    <a class="hero-scroll" href="#about" aria-label="Scroll to content">
+      <Icon name="lucide:chevron-down" aria-hidden="true" />
+    </a>
+  </section>
+
+  {/* --------------------------------------------------------------- About */}
+  <section class="section" id="about">
+    <div class="container about-grid">
+      <div>
+        <p class="eyebrow">About</p>
+        <h2 class="about-lead">{profile.bio[0]}</h2>
+        <a class="section-link" href="/about">
+          More about Sheida <Icon name="lucide:arrow-right" aria-hidden="true" />
+        </a>
+      </div>
+      <div class="about-side surface">
+        <p class="about-side-title">Research interests</p>
+        <ul class="interest-list">
+          {profile.interests.map((i) => <li class="chip chip--accent">{i}</li>)}
+        </ul>
+        <p class="about-side-title about-side-title--mt">Based in</p>
+        <p class="about-location">
+          <Icon name="lucide:map-pin" aria-hidden="true" />
+          {profile.location}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  {/* ------------------------------------------------------------- Writing */}
+  {
+    featured.length > 0 && (
+      <section class="section section--sunken">
+        <div class="container">
+          <div class="section-head">
+            <div>
+              <p class="eyebrow">Writing</p>
+              <h2>Visualizing the subsurface</h2>
+            </div>
+            <a class="section-link" href="/blog">
+              All articles <Icon name="lucide:arrow-right" aria-hidden="true" />
+            </a>
+          </div>
+          <div class="post-grid-cards">
+            {featured.map((post) => (
+              <PostCard post={post} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {/* -------------------------------------------------------- Publications */}
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Research</p>
+          <h2>Selected publications</h2>
+        </div>
+        <a class="section-link" href={scholarUrl} target="_blank" rel="noopener noreferrer">
+          Google Scholar <Icon name="lucide:arrow-up-right" aria-hidden="true" />
+        </a>
+      </div>
+      <PublicationList />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* ---- Hero ---- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    align-items: center;
+    padding-top: var(--nav-h);
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-glow {
+    position: absolute;
+    top: -10%;
+    right: -5%;
+    width: 55vw;
+    height: 55vw;
+    max-width: 720px;
+    max-height: 720px;
+    background: radial-gradient(
+      circle,
+      color-mix(in srgb, var(--accent) 22%, transparent),
+      transparent 62%
+    );
+    filter: blur(10px);
+    pointer-events: none;
+  }
+  .hero-strata {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: min(48vh, 460px);
+  }
+  .bubble {
+    position: absolute;
+    bottom: 14%;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--viz-h2);
+    opacity: 0;
+    filter: blur(0.3px);
+    animation: rise 7s linear infinite;
+  }
+  .b1 { left: 56%; width: 8px; height: 8px; animation-delay: 0s; }
+  .b2 { left: 60%; width: 12px; height: 12px; animation-delay: 1.4s; }
+  .b3 { left: 63%; width: 7px; height: 7px; animation-delay: 2.8s; }
+  .b4 { left: 58%; width: 10px; height: 10px; animation-delay: 4.1s; }
+  .b5 { left: 61%; width: 6px; height: 6px; animation-delay: 5.5s; }
+  @keyframes rise {
+    0% { transform: translateY(0) scale(0.7); opacity: 0; }
+    12% { opacity: 0.75; }
+    80% { opacity: 0.5; }
+    100% { transform: translateY(-190px) scale(1.05); opacity: 0; }
+  }
+
+  .hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 54rem;
+    padding-block: 3.5rem;
+  }
+  .hero-eyebrow {
+    margin-bottom: 1.1rem;
+  }
+  .hero-name {
+    font-size: clamp(2.9rem, 9.5vw, 6rem);
+    line-height: 0.98;
+    letter-spacing: -0.025em;
+  }
+  .hero-tagline {
+    margin-top: 1.3rem;
+    max-width: 34ch;
+    font-size: clamp(1.15rem, 2.6vw, 1.6rem);
+    line-height: 1.45;
+    color: var(--fg-muted);
+  }
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    margin-top: 2.2rem;
+  }
+  .hero-social {
+    margin-top: 2.2rem;
+  }
+  .hero-scroll {
+    position: absolute;
+    bottom: 1.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+    display: inline-grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    color: var(--fg-faint);
+    font-size: 1.3rem;
+    animation: nudge 2.4s ease-in-out infinite;
+  }
+  .hero-scroll:hover {
+    color: var(--accent);
+  }
+  @keyframes nudge {
+    0%, 100% { transform: translate(-50%, 0); }
+    50% { transform: translate(-50%, 6px); }
+  }
+
+  /* ---- About ---- */
+  .about-grid {
+    display: grid;
+    gap: 2.5rem;
+  }
+  @media (min-width: 880px) {
+    .about-grid {
+      grid-template-columns: 1.6fr 1fr;
+      gap: 4rem;
+      align-items: start;
+    }
+  }
+  .about-lead {
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    line-height: 1.4;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    margin-block: 0.8rem 1.5rem;
+  }
+  .about-side {
+    padding: 1.5rem;
+  }
+  .about-side-title {
+    font-family: var(--font-system);
+    font-size: 0.75rem;
+    font-weight: 650;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-faint);
+    margin-bottom: 0.9rem;
+  }
+  .about-side-title--mt {
+    margin-top: 1.6rem;
+  }
+  .interest-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .about-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    color: var(--fg-muted);
+    font-family: var(--font-system);
+  }
+
+  /* ---- shared section bits ---- */
+  .section--sunken {
+    background: var(--bg-sunken);
+    border-block: 1px solid var(--border);
+  }
+  .post-grid-cards {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+  }
+</style>

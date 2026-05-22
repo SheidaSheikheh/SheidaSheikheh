@@ -1,0 +1,127 @@
+---
+title: 'Trona or Salt? Choosing the Rock That Holds Our Hydrogen'
+description: 'Salt caverns are the proven home for underground hydrogen — but Wyoming sits on something different. A visual tour of how trona stacks up against salt as host rock.'
+pubDate: 2026-02-10
+tags: ['Hydrogen storage', 'Trona', 'Caverns']
+heroIcon: 'lucide:layers'
+---
+
+import Figure from '../../components/Figure.astro';
+import Callout from '../../components/Callout.astro';
+import CavernCrossSection from '../../components/viz/CavernCrossSection.tsx';
+import SaltVsTronaCompare from '../../components/viz/SaltVsTronaCompare.tsx';
+import MineralComposition from '../../components/viz/MineralComposition.tsx';
+import GreenRiverBasinMap from '../../components/viz/GreenRiverBasinMap.tsx';
+
+Hydrogen is easy to make and hard to keep. A kilogram of it carries a lot of
+energy but almost no mass, so storing it at the scale of a power grid means
+storing enormous *volumes*. Above ground, that gets expensive fast. The cheapest
+place to put a lot of hydrogen is the same place we already store natural gas:
+**deep underground, inside engineered caverns**.
+
+The catch is that not every rock makes a good cavern. The host formation has to
+be impermeable enough to hold gas for months, strong enough not to collapse, and
+soluble enough that we can carve a cavity into it by pumping in water. For
+decades the answer has been **bedded or domal salt**. But Wyoming — a state with
+big hydrogen ambitions — sits on a different evaporite entirely: **trona**.
+
+So which rock should hold our hydrogen? Let's look.
+
+## Meet the candidates
+
+Salt caverns are the benchmark. Halite — ordinary rock salt, NaCl — is about as
+simple as a mineral gets. Trona is its more complicated cousin: sodium
+sesquicarbonate, a mix of carbonate, bicarbonate, sodium, and water locked into
+one crystal.
+
+<Figure caption="Composition of halite versus trona. Toggle between mass and atom fractions — notice how hydrogen almost vanishes by mass but dominates by atom count.">
+  <MineralComposition client:visible />
+</Figure>
+
+That extra chemistry matters. Trona is **far more soluble** than halite, which
+changes how a cavern is leached and how the rock behaves once gas is cycling in
+and out of it.
+
+## A cavern, cross-sectioned
+
+Both rocks are mined the same clever way: drill a well, inject fresh water,
+dissolve the rock, and pull the brine back out. What's left is a void — the
+cavern — which is then filled with hydrogen. A cushion of gas stays permanently
+to hold the cavern open; the rest is cycled.
+
+<Figure wide caption="An engineered storage cavern. Switch the host rock and cycle the hydrogen in and out — watch how the operating pressure must stay inside a safe window between creep closure and fracturing.">
+  <CavernCrossSection client:visible />
+</Figure>
+
+The pressure bar is the heart of cavern engineering. Run the cavern **too empty**
+and the surrounding rock slowly squeezes the void shut (creep closure). Run it
+**too full** and you risk fracturing the rock or breaching the caprock above. The
+art is staying in the green band — and that band is set by the rock's strength
+and the depth of the cavern.
+
+<Callout type="key" title="Why depth matters">
+Deeper rock is squeezed by more overburden, so it can hold higher gas pressures —
+and higher pressure means more hydrogen per cavern. Salt beds reach those depths
+comfortably. Trona beds in Wyoming are shallower and thinner, which caps how much
+each cavern can hold.
+</Callout>
+
+## Head to head
+
+Put the two rocks side by side and the trade-offs come into focus. Salt wins on
+the things that make engineers comfortable: it's strong, gas-tight, and we have
+half a century of operating experience. Trona's edge is **abundance in the right
+place** — and that turns out to matter a lot.
+
+<Figure caption="Salt versus trona across the properties that decide cavern suitability. Larger is more favourable. Hover any axis for the underlying scores.">
+  <SaltVsTronaCompare client:visible />
+</Figure>
+
+Trona is more soluble (faster to leach, but trickier to keep stable), mechanically
+weaker, and largely **unproven** for gas storage. On paper, salt is the safer
+bet almost everywhere. Almost.
+
+## Why Wyoming cares
+
+Here's the twist. Wyoming wants to produce and store hydrogen as part of the
+Western interstate hydrogen economy — and the rock it has in greatest abundance
+isn't deep salt. It's trona. The **Green River Basin** holds the largest known
+trona deposit on Earth.
+
+<Figure caption="Wyoming's Green River Basin — the world's largest trona deposit. Tap the basin or a city to learn more.">
+  <GreenRiverBasinMap client:visible />
+</Figure>
+
+If you want to store hydrogen *where Wyoming will make it*, you can either
+transport gas long distances to suitable salt, or learn to use the trona that's
+already underfoot. That economic reality is exactly why trona caverns are worth
+studying seriously, even though salt is the easier engineering answer.
+
+## So, trona or salt?
+
+For now, **salt remains the gold standard** — proven, strong, and gas-tight. But
+trona is too abundant in the wrong-for-salt, right-for-hydrogen places to ignore.
+The open questions are about its mechanics: how fast it creeps, how tightly it
+holds gas over many cycles, and how shallow, thin beds limit cavern size. Answer
+those, and a great deal of Wyoming's subsurface becomes available for clean-energy
+storage.
+
+<Callout type="key" title="Takeaways">
+- Underground caverns are the cheapest way to store hydrogen at grid scale.
+- **Salt** is the proven host: strong, gas-tight, decades of experience.
+- **Trona** is weaker, shallower, and unproven — but Wyoming has more of it than
+  anywhere on Earth.
+- The deciding factor isn't just the rock; it's *having the right rock where you
+  need the storage.*
+</Callout>
+
+---
+
+### Further reading
+
+- Sheikheh, S., Rabiei, M., Rasouli, V. — *Comparison of Salt and Trona Caverns
+  for Hydrogen Storage*, SMRI Spring 2023 Technical Conference.
+  [Read on ResearchGate](https://www.researchgate.net/publication/371606410_Comparison_of_Salt_and_Trona_Caverns_for_Hydrogen_Storage).
+
+*Numbers in the interactive figures are illustrative — chosen to make the physics
+legible, not to report specific site data.*

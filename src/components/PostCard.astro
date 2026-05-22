@@ -1,0 +1,108 @@
+---
+import { Icon } from 'astro-icon/components';
+import { formatDate, isoDate } from '../utils/format';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+  featured?: boolean;
+}
+const { post, featured = false } = Astro.props;
+const { title, description, pubDate, tags, heroIcon } = post.data;
+---
+
+<a class:list={['card', { 'card--featured': featured }]} href={`/blog/${post.id}`}>
+  <span class="card-icon" aria-hidden="true">
+    <Icon name={heroIcon} />
+  </span>
+  <div class="card-meta">
+    <time datetime={isoDate(pubDate)}>{formatDate(pubDate)}</time>
+    {tags[0] && <span class="card-tag">{tags[0]}</span>}
+  </div>
+  <h3 class="card-title">{title}</h3>
+  <p class="card-desc">{description}</p>
+  <span class="card-more">
+    Read article
+    <Icon name="lucide:arrow-right" aria-hidden="true" />
+  </span>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    height: 100%;
+    padding: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-elev);
+    color: var(--fg);
+    text-decoration: none;
+    box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    transition: transform 0.2s ease, border-color 0.2s ease,
+      box-shadow 0.2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+    box-shadow: var(--shadow);
+  }
+  .card-icon {
+    display: inline-grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 10px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: 1.3rem;
+  }
+  .card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-system);
+    font-size: 0.82rem;
+    color: var(--fg-muted);
+    margin-top: 0.4rem;
+  }
+  .card-tag {
+    padding: 0.1rem 0.55rem;
+    border-radius: 999px;
+    background: var(--bg-sunken);
+    border: 1px solid var(--border);
+  }
+  .card-title {
+    font-size: 1.22rem;
+    line-height: 1.25;
+  }
+  .card-desc {
+    color: var(--fg-muted);
+    font-size: 0.98rem;
+    flex: 1;
+  }
+  .card-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.4rem;
+    color: var(--accent);
+    font-family: var(--font-system);
+    font-size: 0.92rem;
+    font-weight: 550;
+  }
+  .card:hover .card-more :global(svg) {
+    transform: translateX(3px);
+  }
+  .card-more :global(svg) {
+    transition: transform 0.18s ease;
+  }
+
+  .card--featured {
+    padding: 1.75rem;
+  }
+  .card--featured .card-title {
+    font-size: 1.35rem;
+  }
+</style>

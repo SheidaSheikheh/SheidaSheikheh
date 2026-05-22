@@ -1,0 +1,184 @@
+---
+import { Icon } from 'astro-icon/components';
+import ThemeFontControls from './ThemeFontControls.astro';
+import Logo from './Logo.astro';
+import { profile } from '../data/profile';
+import { scholarUrl } from '../data/publications';
+
+const links = [
+  { href: '/about', label: 'About' },
+  { href: '/blog', label: 'Writing' },
+];
+const scholar = scholarUrl;
+const path = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header class="nav" data-scrolled="false">
+  <div class="nav-inner container">
+    <a href="/" class="nav-brand" aria-label={`${profile.name} — home`}>
+      <Logo size={34} />
+      <span class="nav-name">{profile.name}</span>
+    </a>
+
+    <details class="nav-disclosure" data-nav>
+      <summary class="nav-toggle" aria-label="Menu">
+        <Icon name="lucide:menu" class="nav-toggle-open" aria-hidden="true" />
+        <Icon name="lucide:x" class="nav-toggle-close" aria-hidden="true" />
+      </summary>
+      <nav class="nav-links" aria-label="Primary">
+        {
+          links.map((l) => (
+            <a href={l.href} aria-current={isActive(l.href) ? 'page' : undefined}>
+              {l.label}
+            </a>
+          ))
+        }
+        <a href={scholar} target="_blank" rel="noopener noreferrer" class="nav-ext">
+          Scholar
+          <Icon name="lucide:arrow-up-right" aria-hidden="true" />
+        </a>
+      </nav>
+    </details>
+
+    <div class="nav-right">
+      <ThemeFontControls />
+    </div>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: transparent;
+    transition: background-color 0.25s ease, border-color 0.25s ease,
+      backdrop-filter 0.25s ease;
+    border-bottom: 1px solid transparent;
+  }
+  .nav[data-scrolled='true'] {
+    background: var(--bg-glass);
+    backdrop-filter: saturate(160%) blur(12px);
+    -webkit-backdrop-filter: saturate(160%) blur(12px);
+    border-bottom-color: var(--border);
+  }
+  .nav-inner {
+    height: var(--nav-h);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .nav-brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-right: auto;
+  }
+  .nav-name {
+    font-size: 1.02rem;
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .nav-links a {
+    color: var(--fg-muted);
+    text-decoration: none;
+    font-size: 0.97rem;
+    padding: 0.45rem 0.7rem;
+    border-radius: 8px;
+    font-family: var(--font-system);
+    transition: color 0.16s ease, background-color 0.16s ease;
+  }
+  .nav-links a:hover {
+    color: var(--fg);
+    background: var(--bg-sunken);
+  }
+  .nav-links a[aria-current='page'] {
+    color: var(--accent);
+  }
+  .nav-ext {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .nav-ext :global(svg) {
+    font-size: 0.85em;
+    opacity: 0.7;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+  }
+
+  /* mobile disclosure: closed by default, summary acts as hamburger */
+  .nav-disclosure {
+    position: static;
+  }
+  .nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--bg-elev);
+    color: var(--fg);
+    font-size: 1.2rem;
+    list-style: none;
+  }
+  .nav-toggle::-webkit-details-marker { display: none; }
+  .nav-toggle-close { display: none; }
+
+  @media (max-width: 640px) {
+    .nav-toggle { display: inline-flex; }
+    .nav-disclosure[open] .nav-toggle-open { display: none; }
+    .nav-disclosure[open] .nav-toggle-close { display: inline-flex; }
+    .nav-links {
+      position: absolute;
+      left: var(--pad);
+      right: var(--pad);
+      top: calc(var(--nav-h) - 0.25rem);
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.2rem;
+      padding: 0.6rem;
+      background: var(--bg-elev);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+    .nav-links a { padding: 0.7rem 0.8rem; }
+    .nav-name { display: none; }
+  }
+</style>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.nav');
+  const onScroll = () => {
+    if (!header) return;
+    header.dataset.scrolled = String(window.scrollY > 8);
+  };
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+
+  // close the mobile menu after navigating or clicking outside
+  const nav = document.querySelector<HTMLDetailsElement>('[data-nav]');
+  nav?.querySelectorAll('a').forEach((a) =>
+    a.addEventListener('click', () => (nav.open = false))
+  );
+  document.addEventListener('click', (e) => {
+    if (nav?.open && !nav.contains(e.target as Node)) nav.open = false;
+  });
+</script>

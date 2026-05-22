@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+const posts = (await getCollection('blog'))
+  .filter((p) => !p.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+---
+
+<BaseLayout
+  title="Writing"
+  description="Essays and interactive explainers on hydrogen storage, salt and trona caverns, and reservoir geomechanics."
+>
+  <section class="section">
+    <div class="container">
+      <header class="writing-head">
+        <p class="eyebrow">Writing</p>
+        <h1>Visualizing the subsurface</h1>
+        <p class="writing-intro muted">
+          Interactive explainers on hydrogen storage and the geology that makes it
+          possible — built to be read, not just skimmed.
+        </p>
+      </header>
+
+      {
+        posts.length === 0 ? (
+          <p class="muted">No posts yet — check back soon.</p>
+        ) : (
+          <div class="writing-grid">
+            {posts.map((post) => (
+              <PostCard post={post} />
+            ))}
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .writing-head {
+    max-width: 40rem;
+    margin-bottom: 2.5rem;
+  }
+  .writing-head h1 {
+    font-size: clamp(2.1rem, 6vw, 3.2rem);
+    margin-top: 0.4rem;
+  }
+  .writing-intro {
+    margin-top: 1rem;
+    font-size: 1.15rem;
+    line-height: 1.5;
+  }
+  .writing-grid {
+    display: grid;
+    gap: 1.25rem;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+</style>

@@ -1,0 +1,53 @@
+---
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page not found" description="That page could not be found.">
+  <section class="nf">
+    <div class="container nf-inner">
+      <p class="nf-code">404</p>
+      <h1>This page slipped below the caprock.</h1>
+      <p class="muted nf-text">
+        The page you were looking for doesn't exist or has moved.
+      </p>
+      <div class="nf-actions">
+        <a class="btn btn-primary" href="/">
+          <Icon name="lucide:home" aria-hidden="true" /> Back home
+        </a>
+        <a class="btn btn-ghost" href="/blog">Read the writing</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .nf {
+    min-height: 70svh;
+    display: grid;
+    place-items: center;
+    text-align: center;
+  }
+  .nf-code {
+    font-family: var(--font-mono);
+    font-size: clamp(3rem, 12vw, 6rem);
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+  .nf h1 {
+    font-size: clamp(1.5rem, 4vw, 2.2rem);
+    margin-top: 0.5rem;
+  }
+  .nf-text {
+    margin-top: 0.8rem;
+    font-size: 1.1rem;
+  }
+  .nf-actions {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1.8rem;
+  }
+</style>

@@ -1,0 +1,106 @@
+---
+import { Icon } from 'astro-icon/components';
+import { publications } from '../data/publications';
+
+interface Props {
+  limit?: number;
+}
+const { limit } = Astro.props;
+const items = limit ? publications.slice(0, limit) : publications;
+---
+
+<ol class="pubs">
+  {
+    items.map((p) => (
+      <li class="pub">
+        <div class="pub-year">{p.year}</div>
+        <div class="pub-main">
+          <a class="pub-title" href={p.url} target="_blank" rel="noopener noreferrer">
+            <span>{p.title}</span>
+            <Icon name="lucide:arrow-up-right" aria-hidden="true" />
+          </a>
+          <p class="pub-meta">
+            {p.authors} · <span class="pub-venue">{p.venue}</span>
+            <span class="pub-type">{p.type}</span>
+          </p>
+          {p.note && <p class="pub-note">{p.note}</p>}
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .pubs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .pub {
+    display: grid;
+    grid-template-columns: 3.5rem 1fr;
+    gap: 1rem;
+    padding: 1.1rem 0.25rem;
+    border-top: 1px solid var(--border);
+  }
+  .pub:last-child {
+    border-bottom: 1px solid var(--border);
+  }
+  .pub-year {
+    font-family: var(--font-mono);
+    font-size: 0.95rem;
+    color: var(--fg-faint);
+    padding-top: 0.1rem;
+  }
+  .pub-title {
+    display: inline-flex;
+    align-items: start;
+    gap: 0.35rem;
+    color: var(--fg);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.05rem;
+    line-height: 1.35;
+  }
+  .pub-title:hover {
+    color: var(--accent);
+  }
+  .pub-title :global(svg) {
+    flex: none;
+    margin-top: 0.2em;
+    font-size: 0.8em;
+    color: var(--fg-faint);
+  }
+  .pub-title:hover :global(svg) {
+    color: var(--accent);
+  }
+  .pub-meta {
+    margin-top: 0.3rem;
+    font-family: var(--font-system);
+    font-size: 0.9rem;
+    color: var(--fg-muted);
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .pub-venue {
+    font-style: italic;
+  }
+  .pub-type {
+    padding: 0.05rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--fg-faint);
+  }
+  .pub-note {
+    margin-top: 0.35rem;
+    font-size: 0.95rem;
+    color: var(--fg-muted);
+  }
+</style>
