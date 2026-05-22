@@ -37,7 +37,6 @@ reservoir engineering, geomechanics, and numerical simulation.
 
 - **A review of evaporite beds potential for storage caverns: uncovering new opportunities** — *Applied Sciences*, 2025
 - **Underground Hydrogen Storage Site Selection in Wyoming** — *SPE Energy Transition Symposium*, 2024
-- **A Mid-Century Net-Zero Scenario for the State of Wyoming and its Economic Impacts** — *University of Wyoming*, 2024
 - **Comparison of Salt and Trona Caverns for Hydrogen Storage** — *SMRI Spring 2023 Technical Conference*
 
 Full list and metrics on [Google Scholar](https://scholar.google.com/citations?user=DEE1RU8AAAAJ&hl=en).
@@ -51,42 +50,3 @@ Interactive, visualization-driven explainers at [sheidasheikheh.com](https://she
 - [Will It Hold? The Geomechanics of Keeping a Cavern Stable](https://sheidasheikheh.com/blog/reservoir-geomechanics-cavern-stability/)
 
 ---
-
-## About this site
-
-This repository is the source of [sheidasheikheh.com](https://sheidasheikheh.com) — a
-fast, accessible personal site with a visualization-first blog.
-
-**Stack:** [Astro](https://astro.build) + MDX, React islands for interactive D3/SVG
-visualizations, self-hosted fonts, and a light / dark / sepia theme system with a
-typeface switcher (System · Roboto · Ubuntu · Newsreader · Mono). Icons only, no
-emoji. Deployed to GitHub Pages.
-
-### Develop
-
-```bash
-npm install        # install dependencies
-npm run dev        # local dev server at http://localhost:4321
-npm run build      # production build to ./dist
-npm run preview    # preview the production build
-npm run check      # type-check (astro check)
-```
-
-### Regenerate the social image
-
-```bash
-npm install -D sharp
-node scripts/generate-og.mjs   # writes public/og.png
-```
-
-### Deploy
-
-Pushing to `main` triggers the GitHub Actions workflow in
-[`.github/workflows/deploy.yml`](.github/workflows/deploy.yml), which builds the
-site and publishes it to GitHub Pages.
-
-> **One-time setup:** in the repository's **Settings → Pages**, set **Source** to
-> **GitHub Actions**. The custom domain is configured via `public/CNAME`.
-
-To use this page as a GitHub **profile** README, copy it into a repository named
-after the GitHub username (e.g. `sheidasheikheh/sheidasheikheh`).
