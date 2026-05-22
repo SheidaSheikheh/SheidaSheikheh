@@ -1,37 +1,43 @@
 ---
-import { Icon } from 'astro-icon/components';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { profile } from '../data/profile';
+
+// Drifting H2 molecules (two bonded atoms) — the hydrogen motif.
+const molecules = [
+  { top: '16%', left: '12%', size: 50, op: 0.16, dur: 12, delay: 0 },
+  { top: '68%', left: '16%', size: 36, op: 0.13, dur: 9, delay: 1.4 },
+  { top: '28%', left: '83%', size: 56, op: 0.15, dur: 14, delay: 0.7 },
+  { top: '74%', left: '78%', size: 42, op: 0.12, dur: 11, delay: 2.1 },
+  { top: '50%', left: '92%', size: 28, op: 0.1, dur: 8, delay: 3 },
+  { top: '10%', left: '62%', size: 30, op: 0.1, dur: 13, delay: 1 },
+  { top: '86%', left: '46%', size: 26, op: 0.09, dur: 10, delay: 2.6 },
+];
 ---
 
 <BaseLayout fullscreen={true}>
   <section class="hero">
     <div class="hero-bg" aria-hidden="true">
       <div class="hero-glow"></div>
-      <svg class="hero-strata" viewBox="0 0 1200 480" preserveAspectRatio="xMidYMax slice">
-        <path d="M0,150 C300,110 520,180 760,150 C980,124 1100,165 1200,150 L1200,480 L0,480 Z" fill="var(--viz-overburden)" opacity="0.30"></path>
-        <path d="M0,235 C260,205 470,255 720,232 C960,210 1080,245 1200,232 L1200,480 L0,480 Z" fill="var(--viz-caprock)" opacity="0.28"></path>
-        <path d="M0,320 C280,300 520,335 780,318 C1000,304 1110,330 1200,320 L1200,480 L0,480 Z" fill="var(--viz-trona)" opacity="0.34"></path>
-        <ellipse cx="720" cy="395" rx="120" ry="74" fill="var(--viz-cavern)" stroke="var(--viz-h2)" stroke-opacity="0.5" stroke-width="2"></ellipse>
-      </svg>
-      <span class="bubble b1"></span>
-      <span class="bubble b2"></span>
-      <span class="bubble b3"></span>
-      <span class="bubble b4"></span>
-      <span class="bubble b5"></span>
+      {
+        molecules.map((m) => (
+          <span
+            class="mol"
+            style={`top:${m.top};left:${m.left};width:${m.size}px;opacity:${m.op};animation-duration:${m.dur}s;animation-delay:${m.delay}s`}
+          >
+            <svg viewBox="0 0 40 24" fill="none">
+              <line x1="13" y1="12" x2="27" y2="12" stroke="currentColor" stroke-width="2.5" />
+              <circle cx="13" cy="12" r="7" fill="currentColor" />
+              <circle cx="27" cy="12" r="7" fill="currentColor" />
+            </svg>
+          </span>
+        ))
+      }
     </div>
 
-    <div class="container hero-inner">
+    <div class="hero-inner">
       <p class="eyebrow hero-eyebrow">{profile.affiliation} · Energy &amp; Petroleum Engineering</p>
       <h1 class="hero-name">{profile.name}</h1>
       <p class="hero-tagline">{profile.tagline}</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="/blog">
-          Read the writing
-          <Icon name="lucide:arrow-right" aria-hidden="true" />
-        </a>
-        <a class="btn btn-ghost" href="/about">About</a>
-      </div>
     </div>
   </section>
 </BaseLayout>
@@ -42,7 +48,10 @@ import { profile } from '../data/profile';
     flex: 1;
     display: flex;
     align-items: center;
+    justify-content: center;
+    text-align: center;
     overflow: hidden;
+    padding-inline: var(--pad);
   }
   .hero-bg {
     position: absolute;
@@ -51,76 +60,59 @@ import { profile } from '../data/profile';
   }
   .hero-glow {
     position: absolute;
-    top: -10%;
-    right: -5%;
-    width: 55vw;
-    height: 55vw;
-    max-width: 720px;
-    max-height: 720px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80vw;
+    height: 80vw;
+    max-width: 760px;
+    max-height: 760px;
     background: radial-gradient(
       circle,
-      color-mix(in srgb, var(--accent) 22%, transparent),
-      transparent 62%
+      color-mix(in srgb, var(--accent) 16%, transparent),
+      transparent 60%
     );
-    filter: blur(10px);
     pointer-events: none;
   }
-  .hero-strata {
+  .mol {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    color: var(--accent);
+    animation-name: float;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    will-change: transform;
+  }
+  .mol svg {
     width: 100%;
-    height: min(42vh, 420px);
+    height: auto;
+    display: block;
   }
-  .bubble {
-    position: absolute;
-    bottom: 12%;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: var(--viz-h2);
-    opacity: 0;
-    filter: blur(0.3px);
-    animation: rise 7s linear infinite;
-  }
-  .b1 { left: 56%; width: 8px; height: 8px; animation-delay: 0s; }
-  .b2 { left: 60%; width: 12px; height: 12px; animation-delay: 1.4s; }
-  .b3 { left: 63%; width: 7px; height: 7px; animation-delay: 2.8s; }
-  .b4 { left: 58%; width: 10px; height: 10px; animation-delay: 4.1s; }
-  .b5 { left: 61%; width: 6px; height: 6px; animation-delay: 5.5s; }
-  @keyframes rise {
-    0% { transform: translateY(0) scale(0.7); opacity: 0; }
-    12% { opacity: 0.7; }
-    80% { opacity: 0.45; }
-    100% { transform: translateY(-170px) scale(1.05); opacity: 0; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0) rotate(-5deg); }
+    50% { transform: translateY(-16px) rotate(7deg); }
   }
 
   .hero-inner {
     position: relative;
     z-index: 1;
-    max-width: 54rem;
+    max-width: 48rem;
+    margin-inline: auto;
     padding-block: 2rem;
   }
   .hero-eyebrow {
-    margin-bottom: 1.1rem;
+    margin-bottom: 1.2rem;
   }
   .hero-name {
-    font-size: clamp(2.8rem, 9vw, 5.75rem);
+    font-size: clamp(2.9rem, 10vw, 6.5rem);
     line-height: 0.98;
-    letter-spacing: -0.025em;
+    letter-spacing: -0.03em;
   }
   .hero-tagline {
-    margin-top: 1.3rem;
-    max-width: 34ch;
-    font-size: clamp(1.1rem, 2.5vw, 1.55rem);
-    line-height: 1.45;
+    margin: 1.4rem auto 0;
+    max-width: 40ch;
+    font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+    line-height: 1.5;
     color: var(--fg-muted);
-  }
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.8rem;
-    margin-top: 2.2rem;
+    text-wrap: balance;
   }
 </style>

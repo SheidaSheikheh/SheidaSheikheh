@@ -4,7 +4,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import PublicationList from '../components/PublicationList.astro';
 import { profile } from '../data/profile';
-import { scholarUrl } from '../data/publications';
 
 const themes = [
   {
@@ -81,13 +80,13 @@ const themes = [
       <div class="section-head">
         <div>
           <p class="eyebrow">Research</p>
-          <h2>Publications</h2>
+          <h2>Selected publications</h2>
         </div>
-        <a class="section-link" href={scholarUrl} target="_blank" rel="noopener noreferrer">
-          Google Scholar <Icon name="lucide:arrow-up-right" aria-hidden="true" />
+        <a class="section-link" href="/publications">
+          All publications <Icon name="lucide:arrow-right" aria-hidden="true" />
         </a>
       </div>
-      <PublicationList />
+      <PublicationList limit={3} />
     </div>
   </section>
 </BaseLayout>

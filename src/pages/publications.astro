@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PublicationList from '../components/PublicationList.astro';
+import { scholarUrl } from '../data/publications';
+---
+
+<BaseLayout
+  title="Publications"
+  description="Journal, conference, and report publications by Sheida Sheikheh on hydrogen storage and reservoir geomechanics."
+>
+  <section class="section">
+    <div class="container pub-wrap">
+      <header class="pub-head">
+        <p class="eyebrow">Research</p>
+        <h1>Publications</h1>
+        <p class="pub-intro muted">
+          Work on underground hydrogen storage, evaporite caverns, and reservoir
+          geomechanics. Live metrics on
+          <a href={scholarUrl} target="_blank" rel="noopener noreferrer">Google Scholar</a>.
+        </p>
+      </header>
+      <PublicationList />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .pub-wrap {
+    max-width: 52rem;
+  }
+  .pub-head {
+    margin-bottom: 2rem;
+  }
+  .pub-head h1 {
+    font-size: clamp(2.1rem, 6vw, 3.2rem);
+    margin-top: 0.4rem;
+  }
+  .pub-intro {
+    margin-top: 1rem;
+    font-size: 1.12rem;
+    line-height: 1.55;
+    max-width: 42rem;
+  }
+</style>
