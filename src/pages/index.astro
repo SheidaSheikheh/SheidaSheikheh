@@ -2,36 +2,55 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { profile } from '../data/profile';
 
-// Drifting H2 molecules (two bonded atoms) — the hydrogen motif.
-const molecules = [
-  { top: '16%', left: '12%', size: 50, op: 0.16, dur: 12, delay: 0 },
-  { top: '68%', left: '16%', size: 36, op: 0.13, dur: 9, delay: 1.4 },
-  { top: '28%', left: '83%', size: 56, op: 0.15, dur: 14, delay: 0.7 },
-  { top: '74%', left: '78%', size: 42, op: 0.12, dur: 11, delay: 2.1 },
-  { top: '50%', left: '92%', size: 28, op: 0.1, dur: 8, delay: 3 },
-  { top: '10%', left: '62%', size: 30, op: 0.1, dur: 13, delay: 1 },
-  { top: '86%', left: '46%', size: 26, op: 0.09, dur: 10, delay: 2.6 },
-];
+// A single ellipse, drawn three times (rotated) to form the atom's orbits.
+const ORBIT = 'M38,300 A262,96 0 1 0 562,300 A262,96 0 1 0 38,300 Z';
 ---
 
 <BaseLayout fullscreen={true}>
   <section class="hero">
-    <div class="hero-bg" aria-hidden="true">
-      <div class="hero-glow"></div>
-      {
-        molecules.map((m) => (
-          <span
-            class="mol"
-            style={`top:${m.top};left:${m.left};width:${m.size}px;opacity:${m.op};animation-duration:${m.dur}s;animation-delay:${m.delay}s`}
-          >
-            <svg viewBox="0 0 40 24" fill="none">
-              <line x1="13" y1="12" x2="27" y2="12" stroke="currentColor" stroke-width="2.5" />
-              <circle cx="13" cy="12" r="7" fill="currentColor" />
-              <circle cx="27" cy="12" r="7" fill="currentColor" />
-            </svg>
-          </span>
-        ))
-      }
+    <div class="atom-wrap" aria-hidden="true">
+      <svg class="atom" viewBox="0 0 600 600" aria-hidden="true">
+        <defs>
+          <filter id="atomGlow" x="-60%" y="-60%" width="220%" height="220%">
+            <feGaussianBlur stdDeviation="5" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <radialGradient id="atomCore">
+            <stop offset="0%" class="core-in" />
+            <stop offset="100%" class="core-out" />
+          </radialGradient>
+        </defs>
+
+        <circle cx="300" cy="300" r="170" fill="url(#atomCore)" />
+
+        <g class="atom-spin">
+          <g transform="rotate(0 300 300)">
+            <path id="o1" class="atom-orbit" d={ORBIT} />
+            <circle class="atom-electron" r="6.5" filter="url(#atomGlow)">
+              <animateMotion dur="7s" repeatCount="indefinite"><mpath href="#o1" /></animateMotion>
+            </circle>
+          </g>
+          <g transform="rotate(60 300 300)">
+            <path id="o2" class="atom-orbit" d={ORBIT} />
+            <circle class="atom-electron" r="5.5" filter="url(#atomGlow)">
+              <animateMotion dur="9.5s" begin="-3s" repeatCount="indefinite"><mpath href="#o2" /></animateMotion>
+            </circle>
+          </g>
+          <g transform="rotate(120 300 300)">
+            <path id="o3" class="atom-orbit" d={ORBIT} />
+            <circle class="atom-electron" r="6" filter="url(#atomGlow)">
+              <animateMotion dur="11s" begin="-6s" repeatCount="indefinite"><mpath href="#o3" /></animateMotion>
+            </circle>
+          </g>
+        </g>
+
+        <circle class="atom-nucleus" cx="300" cy="300" r="14" filter="url(#atomGlow)">
+          <animate attributeName="r" values="13;16;13" dur="3.6s" repeatCount="indefinite" />
+        </circle>
+      </svg>
     </div>
 
     <div class="hero-inner">
@@ -53,44 +72,34 @@ const molecules = [
     overflow: hidden;
     padding-inline: var(--pad);
   }
-  .hero-bg {
+
+  .atom-wrap {
     position: absolute;
     inset: 0;
+    display: grid;
+    place-items: center;
     z-index: 0;
-  }
-  .hero-glow {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80vw;
-    height: 80vw;
-    max-width: 760px;
-    max-height: 760px;
-    background: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--accent) 16%, transparent),
-      transparent 60%
-    );
     pointer-events: none;
   }
-  .mol {
-    position: absolute;
-    color: var(--accent);
-    animation-name: float;
-    animation-iteration-count: infinite;
-    animation-timing-function: ease-in-out;
-    will-change: transform;
-  }
-  .mol svg {
-    width: 100%;
+  .atom {
+    width: min(96vmin, 920px);
     height: auto;
-    display: block;
+    overflow: visible;
+    animation: atom-rotate 120s linear infinite;
   }
-  @keyframes float {
-    0%, 100% { transform: translateY(0) rotate(-5deg); }
-    50% { transform: translateY(-16px) rotate(7deg); }
+  @keyframes atom-rotate {
+    to { transform: rotate(360deg); }
   }
+  .atom-orbit {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    opacity: 0.26;
+  }
+  .atom-electron { fill: var(--accent); }
+  .atom-nucleus { fill: var(--accent-strong); }
+  .core-in { stop-color: var(--accent); stop-opacity: 0.28; }
+  .core-out { stop-color: var(--accent); stop-opacity: 0; }
 
   .hero-inner {
     position: relative;
@@ -103,7 +112,7 @@ const molecules = [
     margin-bottom: 1.2rem;
   }
   .hero-name {
-    font-size: clamp(2.9rem, 10vw, 6.5rem);
+    font-size: clamp(2.6rem, 9.5vw, 6.5rem);
     line-height: 0.98;
     letter-spacing: -0.03em;
   }
@@ -116,3 +125,16 @@ const molecules = [
     text-wrap: balance;
   }
 </style>
+
+<script>
+  // Respect reduced-motion: freeze the SMIL orbit timeline.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.querySelectorAll<SVGSVGElement>('svg.atom').forEach((el) => {
+      try {
+        el.pauseAnimations();
+      } catch {
+        /* no-op */
+      }
+    });
+  }
+</script>
