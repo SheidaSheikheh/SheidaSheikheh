@@ -1,8 +1,16 @@
-// Rasterize the SVG logo to PNGs. Run from the project root:
+// Rasterize the SVG logo to PNG icons. Run from the project root:
 //   node scripts/generate-logo.mjs
 import sharp from 'sharp';
 
-await sharp('public/logo.svg').resize(512, 512).png().toFile('public/logo.png');
-await sharp('public/logo.svg').resize(180, 180).png().toFile('public/apple-touch-icon.png');
+const outputs = [
+  ['public/logo.png', 512],
+  ['public/apple-touch-icon.png', 180],
+  ['public/icon-192.png', 192],
+  ['public/icon-512.png', 512],
+];
 
-console.log('Wrote public/logo.png (512x512) and public/apple-touch-icon.png (180x180)');
+for (const [file, size] of outputs) {
+  await sharp('public/logo.svg').resize(size, size).png().toFile(file);
+}
+
+console.log('Wrote: ' + outputs.map(([f]) => f).join(', '));
